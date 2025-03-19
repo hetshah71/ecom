@@ -1,0 +1,36 @@
+.list-inline-item.logout {
+    margin-left: 15px;
+}
+
+.list-inline-item.logout input[type="submit"] {
+    background-color: #dc3545;
+    color: #ffffff;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.list-inline-item.logout input[type="submit"]:hover {
+    background-color: #c82333;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.list-inline-item.logout input[type="submit"]:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.3);
+}
+
+.list-inline-item.logout input[type="submit"]:active {
+    transform: translateY(0);
+    box-shadow: none;
+}

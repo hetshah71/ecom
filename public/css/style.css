@@ -4,6 +4,7 @@ body {
   font-family: "poppins", sans-serif;
   color: #101010;
   background-color: #ffffff;
+  padding-top: 30px;
 }
 
 .layout_padding {
@@ -60,7 +61,16 @@ body {
 
 /*header section*/
 .hero_area {
+  position: relative;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  min-height: auto;
+  display: flex;
+  flex-direction: column;
   padding: 0 45px;
+  background-color: #ffffff;
 }
 
 .hero_area.sub_pages {
@@ -70,11 +80,13 @@ body {
 #navbarSupportedContent {
   width: 100%;
   background-color: skyblue;
+  display: flex;
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
   padding: 10px 0;
   border-radius: 15px 15px 0 0;
+  margin-top: 10px;
 }
 
 #navbarSupportedContent.innerpage_navbar {
@@ -140,9 +152,19 @@ a:focus {
 .custom_nav-container {
   z-index: 99999;
   padding: 0;
-  -webkit-box-orient: vertical;
+  width: 100%;
+  position: relative;
+  display: flex;
+  -webkit-box-orient: horizontal;
   -webkit-box-direction: normal;
-      -ms-flex-direction: column;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
           flex-direction: column;
   -webkit-box-align: center;
       -ms-flex-align: center;

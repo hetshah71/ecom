@@ -3,43 +3,7 @@
 
 <head>
     @include('admin.css')
-    <style type="text/css">
-        .div_deg {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 50px;
-        }
-
-        .table_deg {
-            width: 90%;
-            border: 2px solid greenyellow;
-            margin: auto;
-            padding: 20px;
-            overflow-x: auto;
-        }
-
-        th {
-            background-color: skyblue;
-            color: white;
-            font-size: 20px;
-            font-weight: bold;
-            padding: 15px;
-        }
-
-        td {
-            border: 1px solid skyblue;
-            text-align: center;
-            padding: 10px;
-            color: white;
-
-        }
-
-        img {
-            max-width: 150px;
-            height: auto;
-        }
-    </style>
+    <script src="{{asset('admincss/vendor/jquery/jquery.min.js')}}"></script>
 </head>
 
 <body>
@@ -48,46 +12,101 @@
     <div class="page-content">
         <div class="page-header">
             <div class="container-fluid">
-                <h2 class="text-center" style="margin-top: 20px; font-size: 25px;">All Products</h2>
-                <div class="div_deg">
-                    <table class="table_deg">
-                        <tr>
-                            <th>Product Title</th>
-                            <th>Description</th>
-                            <th>Category</th>
-                            <th>Price(₹)</th>
-                            <th>Quantity</th>
-                            <th>Image</th>
-                        </tr>
-                        @foreach($product as $products)
-                        <tr>
-                            <td>{{$products->title}}</td>
-                            <td>{!!Str::limit($products->description,50)!!}</td>
-                            <td>{{$products->category}}</td>
-                            <td>{{$products->price}}</td>
-                            <td>{{$products->quantity}}</td>
-                            <td>
-                                <img src="{{ asset('storage/'.$products->image) }}" alt="{{$products->title}}">
-                            </td>
-                        </tr>
-                        @endforeach
-                    </table>
-
-                </div>
-                <div class="div_deg">
-                    {{ $product->onEachSide(3)->links() }}
+                <h2 class="text-center text-2xl font-semibold mt-5 mb-8 text-white">All Products</h2>
+                <div class="max-w-7xl mx-auto px-4">
+                    <div class="mb-6 relative">
+                        <input type="text" id="searchInput" placeholder="Search products by title, description or category..." class="w-full px-4 py-3 pl-10 bg-white/5 border border-white/10 rounded-md text-white text-sm transition-all duration-300 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/25 placeholder-gray-400">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fa fa-search text-gray-400"></i>
+                        </div>
+                    </div>
+                    <div class="bg-opacity-20 bg-black rounded-lg shadow-lg border border-opacity-10 border-white p-6 overflow-x-auto">
+                        <table class="w-full">
+                            <tr>
+                                <th class="bg-blue-900 bg-opacity-10 text-white text-sm font-semibold uppercase tracking-wider p-4 border-b-2 border-blue-900 border-opacity-20">Product Title</th>
+                                <th class="bg-blue-900 bg-opacity-10 text-white text-sm font-semibold uppercase tracking-wider p-4 border-b-2 border-blue-900 border-opacity-20">Description</th>
+                                <th class="bg-blue-900 bg-opacity-10 text-white text-sm font-semibold uppercase tracking-wider p-4 border-b-2 border-blue-900 border-opacity-20">Category</th>
+                                <th class="bg-blue-900 bg-opacity-10 text-white text-sm font-semibold uppercase tracking-wider p-4 border-b-2 border-blue-900 border-opacity-20">Price(₹)</th>
+                                <th class="bg-blue-900 bg-opacity-10 text-white text-sm font-semibold uppercase tracking-wider p-4 border-b-2 border-blue-900 border-opacity-20">Quantity</th>
+                                <th class="bg-blue-900 bg-opacity-10 text-white text-sm font-semibold uppercase tracking-wider p-4 border-b-2 border-blue-900 border-opacity-20">Image</th>
+                                <th class="bg-blue-900 bg-opacity-10 text-white text-sm font-semibold uppercase tracking-wider p-4 border-b-2 border-blue-900 border-opacity-20">Action</th>
+                            </tr>
+                            @foreach($product as $products)
+                            <tr class="hover:bg-blue-900 hover:bg-opacity-5 transition-colors duration-200">
+                                <td class="border border-white border-opacity-5 text-center p-4 text-gray-300 text-sm align-middle">{{$products->title}}</td>
+                                <td class="border border-white border-opacity-5 text-center p-4 text-gray-300 text-sm align-middle">{!!Str::limit($products->description,50)!!}</td>
+                                <td class="border border-white border-opacity-5 text-center p-4 text-gray-300 text-sm align-middle">{{$products->category}}</td>
+                                <td class="border border-white border-opacity-5 text-center p-4 text-gray-300 text-sm align-middle">{{$products->price}}</td>
+                                <td class="border border-white border-opacity-5 text-center p-4 text-gray-300 text-sm align-middle">{{$products->quantity}}</td>
+                                <td class="border border-white border-opacity-5 text-center p-4 text-gray-300 text-sm align-middle">
+                                    <img src="{{ asset('storage/'.$products->image) }}" alt="{{$products->title}}" class="max-w-[100px] rounded-lg shadow-lg transition-transform duration-200 hover:scale-105">
+                                </td>
+                                <td class="border border-white border-opacity-5 text-center p-4 text-gray-300 text-sm align-middle">
+                                    <div class="flex justify-center items-center gap-2">
+                                        <a class="w-10 h-10 bg-blue-600 bg-opacity-80 rounded-lg flex items-center justify-center text-white border border-white border-opacity-10 transition-all duration-200 hover:-translate-y-1 hover:shadow-lg" href="{{url('/admin/edit_product',$products->id)}}" title="Edit Product">
+                                            <i class="fa fa-pencil"></i>
+                                        </a>
+                                        <a class="w-10 h-10 bg-red-600 bg-opacity-80 rounded-lg flex items-center justify-center text-white border border-white border-opacity-10 transition-all duration-200 hover:-translate-y-1 hover:shadow-lg" onclick="confirmation(event)" href="{{url('/admin/delete_product',$products->id)}}" title="Delete Product">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </table>
+                    </div>
+                    <div class="mt-8 flex justify-center">
+                        {{ $product->onEachSide(3)->links() }}
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <script src="{{asset('admincss/vendor/jquery/jquery.min.js')}}"></script>
-    <script src="{{asset('admincss/vendor/popper.js/umd/popper.min.js')}}"></script>
-    <script src="{{asset('admincss/vendor/bootstrap/js/bootstrap.min.js')}}"></script>
-    <script src="{{asset('admincss/vendor/jquery.cookie/jquery.cookie.js')}}"></script>
-    <script src="{{asset('admincss/vendor/chart.js/Chart.min.js')}}"></script>
-    <script src="{{asset('admincss/vendor/jquery-validation/jquery.validate.min.js')}}"></script>
-    <script src="{{asset('admincss/js/charts-home.js')}}"></script>
-    <script src="{{asset('admincss/js/front.js')}}"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#searchInput').on('keyup', function() {
+                var value = $(this).val().toLowerCase();
+                $('table tr').not(':first').filter(function() {
+                    var title = $(this).find('td:nth-child(1)').text().toLowerCase();
+                    var description = $(this).find('td:nth-child(2)').text().toLowerCase();
+                    var category = $(this).find('td:nth-child(3)').text().toLowerCase();
+                    return title.indexOf(value) > -1 || description.indexOf(value) > -1 || category.indexOf(value) > -1;
+                }).show();
+                $('table tr').not(':first').filter(function() {
+                    var title = $(this).find('td:nth-child(1)').text().toLowerCase();
+                    var description = $(this).find('td:nth-child(2)').text().toLowerCase();
+                    var category = $(this).find('td:nth-child(3)').text().toLowerCase();
+                    return title.indexOf(value) === -1 && description.indexOf(value) === -1 && category.indexOf(value) === -1;
+                }).hide();
+            });
+        });
+    </script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <script type="text/javascript">
+            function confirmation(ev) {
+                ev.preventDefault();
+                var urlToRedirect = ev.currentTarget.getAttribute('href');
+                swal({
+                        title: "Are you sure to delete this?",
+                        text: "This delete will be permanent!",
+                        icon: "warning",
+                        buttons: ["Cancel", "Yes, delete it!"],
+                        dangerMode: true,
+                    })
+                    .then((willDelete) => {
+                        if (willDelete) {
+                            window.location.href = urlToRedirect;
+                        }
+                    });
+            }
+        </script>
+        <script src="{{asset('admincss/vendor/popper.js/umd/popper.min.js')}}"></script>
+        <script src="{{asset('admincss/vendor/bootstrap/js/bootstrap.min.js')}}"></script>
+        <script src="{{asset('admincss/vendor/jquery.cookie/jquery.cookie.js')}}"></script>
+        <script src="{{asset('admincss/vendor/chart.js/Chart.min.js')}}"></script>
+        <script src="{{asset('admincss/vendor/jquery-validation/jquery.validate.min.js')}}"></script>
+        <script src="{{asset('admincss/js/charts-home.js')}}"></script>
+        <script src="{{asset('admincss/js/front.js')}}"></script>
 </body>
 
 </html>

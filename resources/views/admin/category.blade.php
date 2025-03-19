@@ -3,89 +3,6 @@
 
 <head>
     @include('admin.css')
-    <!-- <style>
-        body {
-            background-color: #f4f4f4;
-            font-family: Arial, sans-serif;
-        }
-
-        h1 {
-            text-align: center;
-            color: #333;
-            margin-top: 20px;
-        }
-
-        .div_deg {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 40px;
-        }
-
-        form {
-            background: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-
-        input[type="text"] {
-            width: 250px;
-            height: 40px;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-            padding: 8px;
-            font-size: 16px;
-            transition: 0.3s;
-        }
-
-        input[type="text"]:focus {
-            border-color: #007bff;
-            outline: none;
-            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-        }
-
-        .btn-btn-primary {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            font-size: 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .btn-btn-primary:hover {
-            background-color: #0056b3;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        .table_deg {
-            text-align: center;
-            margin: auto;
-            border: 2px solid yellowgreen;
-            margin-top: 50px;
-            width: 600px;
-        }
-
-        th {
-            background-color: skyblue;
-            padding: 15px;
-            font-size: 20px;
-            font-weight: bold;
-            color: white;
-        }
-
-        td {
-            color: white;
-            padding: 10px;
-            border: 2px solid skyblue;
-        }
-    </style> -->
     @vite("resources/css/app.css")
 </head>
 
@@ -96,58 +13,52 @@
     <div class="page-content">
         <div class="page-header">
             <div class="container-fluid">
-                <div class="max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-8">
-                    <h1 class="text-3xl font-bold text-gray-800 mb-4 text-center">Add Category</h1>
+                <div class="max-w-3xl mx-auto p-8 bg-black bg-opacity-20 rounded-lg shadow-lg">
+                    <h1 class="text-white text-2xl font-semibold mb-8 text-center">Add Category</h1>
 
-                    <!-- Form -->
-                    <form action="{{ url('add_category') }}" method="post" class="flex flex-col sm:flex-row gap-4">
+                    <form action="{{ url('/admin/add_category') }}" method="post">
                         @csrf
-                        <input
-                            type="text"
-                            name="category"
-                            placeholder="Enter category name"
-                            class="w-full sm:w-auto flex-grow px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition">
-                        <button
-                            type="submit"
-                            class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium shadow-sm">
-                            + Add Category
-                        </button>
+                        <div class="mb-6">
+                            <!-- <label class="block mb-2 text-sm font-medium text-gray-300">Category Name</label> -->
+                            <input type="text" name="category" placeholder="Enter category name" required
+                                class="w-full px-3 py-3 bg-gray-300 bg-opacity-5 border border-white border-opacity-10 rounded-md text-white text-sm transition-all duration-300 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-25">
+                        </div>
+
+                        <div class="mb-6">
+                            <button type="submit" class="w-full px-3 py-3 bg-green-500 hover:bg-green-600 text-white font-semibold uppercase tracking-wider rounded-md transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-lg">
+                                Add Category
+                            </button>
+                        </div>
                     </form>
 
-                    <!-- Table -->
-                    <div class="mt-8 overflow-hidden rounded-lg border border-gray-200">
-                        <table class="min-w-full bg-white">
-                            <thead class="bg-gray-100">
-                                <tr>
-                                    <th class="px-6 py-4 text-left text-sm font-medium text-gray-600 uppercase">Category Name</th>
-                                    <th class="px-6 py-4 text-center text-sm font-medium text-gray-600 uppercase">Edit</th>
-                                    <th class="px-6 py-4 text-center text-sm font-medium text-gray-600 uppercase">Delete</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-200">
-                                @foreach($data as $data)
-                                <tr class="hover:bg-gray-50 transition">
-                                    <td class="px-6 py-4 text-gray-800 font-medium">{{ $data->category_name }}</td>
-                                    <td class="px-6 py-4 text-center">
-                                        <a href="{{ url('edit_category', $data->id) }}"
-                                            class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition">
-                                            ✏️ Edit
+                    <div class="w-11/12 mx-auto mt-8 p-4 border-2 border-green-500 border-opacity-30 rounded-lg">
+                        <table class="w-full">
+                            <tr>
+                                <th class="bg-blue-900 bg-opacity-10 text-white text-base font-semibold uppercase tracking-wider p-4">
+                                    Category Name
+                                </th>
+                                <th class="bg-blue-900 bg-opacity-10 text-white text-base font-semibold uppercase tracking-wider p-4">
+                                    Action
+                                </th>
+                            </tr>
+                            @foreach($data as $data)
+                            <tr>
+                                <td class="text-gray-300 p-3 border border-blue-900 border-opacity-10">{{ $data->category_name }}</td>
+                                <td class="text-gray-300 p-3 border border-blue-900 border-opacity-10">
+                                    <div class="flex gap-2 justify-center">
+                                        <a href="{{ url('/admin/edit_category', $data->id) }}" class="px-4 py-2 bg-green-500 bg-opacity-10 text-green-500 font-medium rounded hover:bg-green-500 hover:text-white transition-all duration-300">
+                                            Edit
                                         </a>
-                                    </td>
-                                    <td class="px-6 py-4 text-center">
-                                        <a onclick="confirmation(event)"
-                                            href="{{ url('delete_category', $data->id) }}"
-                                            class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition">
-                                            🗑️ Delete
+                                        <a onclick="confirmation(event)" href="{{ url('/admin/delete_category', $data->id) }}" class="px-4 py-2 bg-red-500 bg-opacity-10 text-red-500 font-medium rounded hover:bg-red-500 hover:text-white transition-all duration-300">
+                                            Delete
                                         </a>
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
+                                    </div>
+                                </td>
+                            </tr>
+                            @endforeach
                         </table>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -155,7 +66,7 @@
     <script type="text/javascript">
         function confirmation(ev) {
             ev.preventDefault();
-            var urlToRedirect = ev.currentTarget.getAttribute('href'); //get the URL to redirect to
+            var urlToRedirect = ev.currentTarget.getAttribute('href');
             console.log(urlToRedirect);
             swal({
                     title: "Are you sure to delete This?",
@@ -169,7 +80,6 @@
                         window.location.href = urlToRedirect;
                     }
                 });
-
         }
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
