@@ -9,6 +9,7 @@ use App\Models\Order;
 use App\Models\product;
 use Illuminate\Support\Facades\Storage;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Str;
 
 
 
@@ -63,6 +64,7 @@ class AdminController extends Controller
         $data->price = $request->price;
         $data->quantity = $request->qty;
         $data->category = $request->category;
+        $data->slug=Str::slug($request->title);
 
         $image = $request->image;
         if ($image) {

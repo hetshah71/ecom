@@ -50,8 +50,13 @@
                         </div>
 
                         <div class="detail-box">
-                            
-                             <p>description : {{$data->description}}</p>
+
+                            <p>description : {{$data->description}}</p>
+                        </div>
+
+                        <div class="detail-box">
+
+                            <a href="{{url('add_cart',$data->id)}}" class="btn btn-success">Add to Cart</a>
                         </div>
 
                     </div>

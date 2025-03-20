@@ -56,7 +56,7 @@ Route::prefix('admin')->group(function () {
 
 
 
-Route::get('product_details/{id}', [HomeController::class, 'product_details']);
+Route::get('product_details/{slug}', [HomeController::class, 'product_details']);
 
 Route::get('add_cart/{id}', [HomeController::class, 'add_cart'])->middleware((['auth', 'verified']));
 
@@ -65,3 +65,13 @@ Route::get('mycart', [HomeController::class, 'mycart'])->middleware((['auth', 'v
 Route::delete('remove_cart/{id}', [HomeController::class, 'remove_cart'])->name('remove_cart')->middleware((['auth', 'verified']));
 
 Route::post('confirm_order', [HomeController::class, 'confirm_order'])->middleware((['auth', 'verified']));
+
+Route::get('/myorders', [HomeController::class, 'myorders'])->middleware(['auth', 'verified']);
+
+route::get('shop', [HomeController::class, 'shop']);
+
+route::get('why', [HomeController::class, 'why']);
+
+route::get('contact', [HomeController::class, 'contact']);
+
+Route::get('testimonial', [HomeController::class, 'testimonial']);

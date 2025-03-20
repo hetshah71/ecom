@@ -14,31 +14,37 @@
                     <a class="nav-link" href="{{ url('/') }}">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/shop') }}">
+                    <a class="nav-link" href="{{ url('shop') }}">
                         Shop
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/why-us') }}">
+                    <a class="nav-link" href="{{ url('why') }}">
                         Why Us
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/testimonial') }}">
+                    <a class="nav-link" href="{{ url('testimonial') }}">
                         Testimonial
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/contact') }}">Contact Us</a>
+                    <a class="nav-link" href="{{ url('contact') }}">Contact Us</a>
                 </li>
             </ul>
             <div class="user_option">
                 @if (Route::has('login'))
                 @auth
+
+                <a href="{{url('myorders')}}">
+                    My Orders
+                </a>
+
                 <a href="{{url('mycart')}}">
                     <i class="fa fa-shopping-bag" aria-hidden="true"></i>
                     [{{ $count }}]
                 </a>
+
                 <form style="padding:10px" method="POST" action="{{ route('logout') }}">
                     @csrf
                     <input type="submit" value="Logout" class="btn btn-primary">

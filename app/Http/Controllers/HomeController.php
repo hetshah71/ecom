@@ -46,9 +46,10 @@ class HomeController extends Controller
         }
         return view('home.index', compact('product', 'count'));
     }
-    public function product_details($id)
+    public function product_details(string $slug)
     {
-        $data = product::find($id);
+        $data = product::where('slug', $slug)->firstOrFail();
+        // dd($data)/;
         if (Auth::id()) {
             $user = Auth::user();
             $userid = $user->id;
@@ -116,5 +117,67 @@ class HomeController extends Controller
         }
          session()->flash('success', 'Product ordered successfully');
         return redirect()->back();
+    }
+    public function myorders()
+    {
+        $user = Auth::user()->id;
+        $count = cart::where('user_id',$user)->get()->count();
+        $order = Order::where('user_id', $user)->get();
+        return view('home.order',compact('count','order'));
+    }
+    public function shop()
+    {
+        $product = product::all();
+        if (Auth::id()) {
+            $user = Auth::user();
+            $userid = $user->id;
+            $count = Cart::where('user_id', $userid)->count();
+        } else {
+            $count = '';
+        }
+
+        return view('home.shop', compact('product', 'count'));
+    }
+  
+    public function why()
+    {
+        
+        if (Auth::id()) {
+            $user = Auth::user();
+            $userid = $user->id;
+            $count = Cart::where('user_id', $userid)->count();
+        } else {
+            $count = '';
+        }
+
+        return view('home.why', compact( 'count'));
+    }
+
+    public function   testimonial()
+    {
+
+        if (Auth::id()) {
+            $user = Auth::user();
+            $userid = $user->id;
+            $count = Cart::where('user_id', $userid)->count();
+        } else {
+            $count = '';
+        }
+
+        return view('home.testimonial', compact('count'));
+    }
+
+    public function contact()
+    {
+
+        if (Auth::id()) {
+            $user = Auth::user();
+            $userid = $user->id;
+            $count = Cart::where('user_id', $userid)->count();
+        } else {
+            $count = '';
+        }
+
+        return view('home.contact', compact('count'));
     }
 }
