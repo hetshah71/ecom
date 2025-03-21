@@ -18,5 +18,8 @@ class Product extends Model
 
     protected $table = 'products';
     
-    
+    public function carts()
+    {
+        return $this->hasMany(Cart::class);
+    }
 }

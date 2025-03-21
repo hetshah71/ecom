@@ -33,6 +33,25 @@
             border: 2px solid skyblue;
             padding: 10px;
         }
+
+        .alert {
+            padding: 15px;
+            margin: 20px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+        }
+
+        .alert-success {
+            color: #155724;
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+
+        .success-container {
+            max-width: 800px;
+            margin: 20px auto;
+            text-align: center;
+        }
     </style>
 
 </head>
@@ -41,6 +60,15 @@
     <div class="hero_area">
 
         @include('home.header')
+
+        @if(session()->has('order_success'))
+        <div class="success-container">
+            <div class="alert alert-success">
+                {{ session()->get('order_success') }}
+            </div>
+        </div>
+        @endif
+
         <div class="div_center">
             <table>
                 <tr>
@@ -63,6 +91,17 @@
         </div>
     </div>
     @include('home.footer')
+
+    <!-- Add jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // Auto-hide success message after 3 seconds
+        $(document).ready(function() {
+            setTimeout(function() {
+                $('.alert-success').fadeOut('slow');
+            }, 3000);
+        });
+    </script>
 </body>
 
 </html>

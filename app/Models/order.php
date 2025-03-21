@@ -3,14 +3,37 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\User;
+use App\Models\Product;
 
-class order extends Model
+class Order extends Model
 {
-    public function user(){
-        return $this->hasOne('App\Models\User','id','user_id');
+    use HasFactory;
+
+    protected $fillable = [
+        'name',
+        'email',
+        'phone',
+        'address',
+        'user_id',
+        'product_title',
+        'quantity',
+        'price',
+        'image',
+        'product_id',
+        'payment_status',
+        'delivery_status',
+        'invoice_no'
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
+
     public function product()
     {
-        return $this->hasOne('App\Models\product', 'id', 'product_id');
+        return $this->belongsTo(Product::class);
     }
 }

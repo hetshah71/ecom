@@ -15,8 +15,7 @@
         <h2>Product title:{{$data->product->title}}</h2>
         <h2>Product Price:{{$data->product->price}}</h2>
         <img height="250" width = "250" src="{{ 'storage/' . $data->product->image }}">
-
-            </center>
+    </center>
 
 </body>
 

@@ -64,14 +64,18 @@ Route::get('mycart', [HomeController::class, 'mycart'])->middleware((['auth', 'v
 
 Route::delete('remove_cart/{id}', [HomeController::class, 'remove_cart'])->name('remove_cart')->middleware((['auth', 'verified']));
 
-Route::post('confirm_order', [HomeController::class, 'confirm_order'])->middleware((['auth', 'verified']));
+Route::post('confirm_order', [HomeController::class, 'confirm_order'])->name('confirm_order')->middleware((['auth', 'verified']));
+// Route::post('confirm_order', function(){
+//     dd('confirm_order');
+// })->name('confirm_order')->middleware((['auth', 'verified']));
 
-Route::get('/myorders', [HomeController::class, 'myorders'])->middleware(['auth', 'verified']);
+Route::get('/myorders', [HomeController::class, 'myorders'])->middleware(['auth', 'verified'])->name('myorders');
+Route::get('/invoice/{invoice_no}', [HomeController::class, 'showInvoice'])->name('show.invoice');
 
-route::get('shop', [HomeController::class, 'shop']);
+Route::get('shop', [HomeController::class, 'shop'])->name('shop');
 
-route::get('why', [HomeController::class, 'why']);
+Route::get('why', [HomeController::class, 'why']);
 
-route::get('contact', [HomeController::class, 'contact']);
+Route::get('contact', [HomeController::class, 'contact']);
 
 Route::get('testimonial', [HomeController::class, 'testimonial']);

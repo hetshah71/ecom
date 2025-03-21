@@ -42,7 +42,7 @@
 
                 <a href="{{url('mycart')}}">
                     <i class="fa fa-shopping-bag" aria-hidden="true"></i>
-                    [{{ $count }}]
+                    [<span id="cart-count" class="cart_count">{{ $count }}</span>]
                 </a>
 
                 <form style="padding:10px" method="POST" action="{{ route('logout') }}">
@@ -66,5 +66,7 @@
                 @endif
             </div>
         </div>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="{{ asset('js/cart.js') }}"></script>
     </nav>
 </header>

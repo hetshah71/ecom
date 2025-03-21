@@ -2,18 +2,20 @@
 <html>
 
 <head>
-    
+
     @include('home.css')
 </head>
+
 <body>
+    @include('home.flash-message')
     <div class="hero_area">
-        
+
         <!-- header section strats -->
-            @include('home.header')
+        @include('home.header')
         <!-- end header section -->
-        
+
         <!-- slider section -->
-            @include('home.slider')
+        @include('home.slider')
         <!-- end slider section -->
 
     </div>
@@ -23,7 +25,7 @@
     @include('home.product')
     <!-- end shop section -->
 
-    
+
 
     <!-- info section -->
     @include('home.footer')

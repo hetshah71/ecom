@@ -3,6 +3,7 @@
 
 <head>
     @include('home.css')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <style type="text/css">
         .div_center {
             display: flex;
@@ -13,6 +14,25 @@
 
         .detail-box {
             padding: 15px;
+        }
+
+        /* Add styles for messages */
+        .alert {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
         }
     </style>
 </head>
@@ -56,7 +76,8 @@
 
                         <div class="detail-box">
 
-                            <a href="{{url('add_cart',$data->id)}}" class="btn btn-success">Add to Cart</a>
+                            <button class="btn btn-success add-to-cart" data-product-id="{{$data->id}}">Add to Cart</button>
+                            <div id="cart-message" class="mt-2"></div>
                         </div>
 
                     </div>
@@ -74,7 +95,86 @@
     @include('home.footer')
     <!-- end info section -->
 
+    <!-- Add jQuery and Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
 
+    <!-- Add custom cart JavaScript -->
+    <script>
+        $(document).ready(function() {
+            // Set up CSRF token for AJAX requests
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            // Remove any existing click handlers
+            $('.add-to-cart').off('click');
+
+            // Add to cart button click handler
+            $('.add-to-cart').on('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation(); // Prevent event bubbling
+
+                const productId = $(this).data('product-id');
+                const button = $(this);
+                const messageDiv = $('#cart-message');
+
+                // If button is already processing, return
+                if (button.prop('disabled')) {
+                    return;
+                }
+
+                // Disable the button while processing
+                button.prop('disabled', true);
+
+                $.ajax({
+                    url: '/add_cart/' + productId,
+                    type: 'GET',
+                    success: function(response) {
+                        if (response.success) {
+                            messageDiv.html('<div class="alert alert-success">' + response.message + '</div>');
+
+                            // Update cart count in header
+                            if (response.cartCount !== undefined) {
+                                $('#cart-count').text(response.cartCount);
+                            }
+                        } else {
+                            messageDiv.html('<div class="alert alert-danger">' + (response.message || 'Error adding to cart') + '</div>');
+                        }
+
+                        // Clear message after 2 seconds
+                        setTimeout(function() {
+                            messageDiv.html('');
+                        }, 2000);
+                    },
+                    error: function(xhr) {
+                        console.log('Error:', xhr);
+                        let errorMessage = 'Error adding to cart';
+
+                        if (xhr.status === 401) {
+                            errorMessage = 'Please login first';
+                        } else if (xhr.responseJSON && xhr.responseJSON.message) {
+                            errorMessage = xhr.responseJSON.message;
+                        }
+
+                        messageDiv.html('<div class="alert alert-danger">' + errorMessage + '</div>');
+
+                        setTimeout(function() {
+                            messageDiv.html('');
+                        }, 2000);
+                    },
+                    complete: function() {
+                        // Re-enable the button after request completes
+                        setTimeout(function() {
+                            button.prop('disabled', false);
+                        }, 1000); // Add a small delay before re-enabling the button
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>

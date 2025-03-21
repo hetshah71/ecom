@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('status')->default('in process');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('product_id');
+            $table
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('product_id')->references('id')->on('products')->onUpdate('cascade');
