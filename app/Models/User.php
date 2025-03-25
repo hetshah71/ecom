@@ -14,7 +14,7 @@ use App\Mail\WelcomeMail;
 class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, \Illuminate\Auth\MustVerifyEmail;
 
     protected static function booted()
     {

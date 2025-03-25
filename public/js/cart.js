@@ -111,10 +111,8 @@ $(document).ready(function () {
                         )
                         .show();
 
-                    // Redirect to invoice page after a short delay
-                    setTimeout(function () {
-                        window.location.href = response.redirect_url;
-                    }, 1500);
+                    // Redirect to invoice page
+                    window.location.href = response.redirect_url;
                 } else {
                     // Show error message
                     $("#cart-message")
@@ -159,77 +157,5 @@ $(document).ready(function () {
     }
 
     // Handle add to cart button click
-    $(document).on("click", ".add-to-cart", function (e) {
-        e.preventDefault();
-        const productId = $(this).data("product-id");
-        const messageDiv = $("#cart-message");
-
-        $.ajax({
-            url: `/add_cart/${productId}`,
-            type: "GET",
-            headers: {
-                "X-Requested-With": "XMLHttpRequest",
-                Accept: "application/json",
-            },
-            beforeSend: function () {
-                messageDiv
-                    .removeClass("text-success text-danger")
-                    .html(
-                        '<div class="spinner-border spinner-border-sm" role="status"></div> Adding to cart...'
-                    );
-            },
-            success: function (response) {
-                if (response.success) {
-                    // Display success message
-                    messageDiv
-                        .removeClass("text-danger")
-                        .addClass("text-success")
-                        .html(
-                            '<div class="alert alert-success" role="alert">' +
-                                response.message +
-                                "</div>"
-                        );
-                    // Update cart count in the navigation
-                    $(".cart_count").text(response.cartCount);
-
-                    // Also show a floating notification that will be visible on any page
-                    showFloatingNotification(response.message, "success");
-
-                    // Clear message after 3 seconds
-                    setTimeout(function () {
-                        messageDiv.html("");
-                    }, 3000);
-                } else {
-                    messageDiv
-                        .removeClass("text-success")
-                        .addClass("text-danger")
-                        .html(
-                            '<div class="alert alert-danger" role="alert">' +
-                                response.message +
-                                "</div>"
-                        );
-                }
-            },
-            error: function (xhr) {
-                const response = xhr.responseJSON;
-                const errorMessage =
-                    response && response.message
-                        ? response.message
-                        : "Error adding product to cart. Please try again.";
-                messageDiv
-                    .removeClass("text-success")
-                    .addClass("text-danger")
-                    .html(
-                        '<div class="alert alert-danger" role="alert">' +
-                            errorMessage +
-                            "</div>"
-                    );
-
-                // Redirect to login if unauthorized
-                if (xhr.status === 401) {
-                    window.location.href = "/login";
-                }
-            },
-        });
-    });
+  
 });

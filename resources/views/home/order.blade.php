@@ -77,7 +77,8 @@
                     <th>Delivery Status</th>
                     <th>Image</th>
                 </tr>
-                @foreach($order as $order)
+                
+                @foreach($orders as $order)
                 <tr>
                     <td>{{$order->product->title}}</td>
                     <td>{{$order->product->price}}</td>

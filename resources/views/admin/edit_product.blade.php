@@ -20,24 +20,36 @@
                 @endif
                 <div class="max-w-3xl mx-auto p-8 bg-black/20 rounded-lg shadow-lg">
                     <h1 class="text-white text-2xl font-semibold mb-8 text-center">Edit Product</h1>
-                    <form action="{{url('/update_product', $product->id)}}" method="POST" enctype="multipart/form-data">
+                    <form action="{{url('/admin/update_product', $product->id)}}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="mb-6">
                             <label class="block mb-2 text-sm font-medium text-gray-300">Product Title :</label>
                             <input class="w-full px-3 py-3 bg-white/5 border border-white/10 rounded-md text-white text-sm transition-all duration-300 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/25" type="text" name="title" placeholder="Write a title" required value="{{$product->title}}">
                         </div>
+                        @error('title')
+                        <span class="text-red-500">{{ $message }}</span>
+                        @enderror
                         <div class="mb-6">
                             <label class="block mb-2 text-sm font-medium text-gray-300">Product Description :</label>
                             <input class="w-full px-3 py-3 bg-white/5 border border-white/10 rounded-md text-white text-sm transition-all duration-300 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/25" type="text" name="description" placeholder="Write a description" required value="{{$product->description}}">
                         </div>
+                        @error('description')
+                        <span class="text-red-500">{{ $message }}</span>
+                        @enderror
                         <div class="mb-6">
                             <label class="block mb-2 text-sm font-medium text-gray-300">Product Price :</label>
                             <input class="w-full px-3 py-3 bg-white/5 border border-white/10 rounded-md text-white text-sm transition-all duration-300 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/25" type="number" name="price" placeholder="Write a price" required value="{{$product->price}}">
                         </div>
+                        @error('price')
+                        <span class="text-red-500">{{ $message }}</span>
+                        @enderror
                         <div class="mb-6">
                             <label class="block mb-2 text-sm font-medium text-gray-300">Product Quantity :</label>
                             <input class="w-full px-3 py-3 bg-white/5 border border-white/10 rounded-md text-white text-sm transition-all duration-300 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/25" type="number" min="0" name="qty" placeholder="Write a quantity" required value="{{$product->quantity}}">
                         </div>
+                        @error('qty')
+                        <span class="text-red-500">{{ $message }}</span>
+                        @enderror
                         <div class="mb-6">
                             <label class="block mb-2 text-sm font-medium text-gray-300">Product Category :</label>
                             <select class="w-full px-3 py-3 bg-white/5 border border-white/10 rounded-md text-white text-sm transition-all duration-300 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/25 cursor-pointer" name="category" required>
@@ -49,6 +61,9 @@
                                 @endforeach
                             </select>
                         </div>
+                        @error('category')
+                        <span class="text-red-500">{{ $message }}</span>
+                        @enderror
                         <div class="mb-6">
                             <label class="block mb-2 text-sm font-medium text-gray-300">Product Image</label>
                             <div class="text-center my-4">
@@ -59,6 +74,9 @@
                             </label>
                             <input type="file" name="image" id="image" class="hidden">
                         </div>
+                        @error('image')
+                        <span class="text-red-500">{{ $message }}</span>
+                        @enderror
                         <div class="mb-6">
                             <button type="submit" class="w-full px-3 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold uppercase tracking-wider rounded-md transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-lg">
                                 Update Product

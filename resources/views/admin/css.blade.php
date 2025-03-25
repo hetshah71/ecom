@@ -24,3 +24,9 @@
         <script src=" https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js">
 </script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+
+
+<!-- Summernote CSS-->
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote.min.css" rel="stylesheet">
+<!-- Note: jQuery and Bootstrap JS are loaded in the footer to prevent conflicts -->
+<!-- Summernote JS will be loaded after jQuery in the footer -->

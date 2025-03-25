@@ -8,333 +8,188 @@ use App\Models\Product;
 use App\Models\User;
 use App\Models\Cart;
 use App\Models\Order;
+use App\Models\StaticBlock;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use App\Services\OrderService;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class HomeController extends Controller
 {
+    protected $orderService;
+
+    public function __construct(OrderService $orderService)
+    {
+        $this->orderService = $orderService;
+    }
+
     public function index()
     {
-        $user = User::where('usertype', 'user')->get()->count();
-        $product = Product::all()->count();
-        $order = Order::all()->count();
-        $delivered = Order::where('status', 'Delivered')->get()->count();
-        return view('admin.index', compact('user', 'product', 'order', 'delivered'));
+        try {
+            $user = User::where('usertype', 'user')->count();
+            $product = Product::count();
+            $order = Order::count();
+            $delivered = Order::where('status', 'Delivered')->count();
+            return view('admin.index', compact('user', 'product', 'order', 'delivered'));
+        } catch (\Exception $e) {
+            Log::error('Error fetching index data: ' . $e->getMessage());
+            return back()->with('error', 'An error occurred while loading data.');
+        }
     }
 
     public function home()
     {
-        $product = product::all();
-        if (Auth::id()) {
-            $user = Auth::user();
-            $userid = $user->id;
-            $count = Cart::where('user_id', $userid)->count();
-        } else {
-            $count = '';
+        try {
+            $products = Product::all();
+            $count = Auth::check() ? Cart::where('user_id', Auth::id())->count() : '';
+            $block = StaticBlock::where('slug', 'hello')->first();
+            return view('home.index', compact('products', 'count', 'block'));
+        } catch (\Exception $e) {
+            Log::error('Error loading home page: ' . $e->getMessage());
+            return back()->with('error', 'An error occurred while loading the home page.');
         }
-
-        return view('home.index', compact('product', 'count'));
     }
+
     public function login_home()
     {
-        $product = product::all();
-        if (Auth::id()) {
-            $user = Auth::user();
-            $userid = $user->id;
-            $count = Cart::where('user_id', $userid)->count();
-        } else {
-            $count = '';
-        }
-        return view('home.index', compact('product', 'count'));
+        return $this->home();
     }
+
     public function product_details(string $slug)
     {
-        $data = product::where('slug', $slug)->firstOrFail();
-        // dd($data)/;
-        if (Auth::id()) {
-            $user = Auth::user();
-            $userid = $user->id;
-            $count = Cart::where('user_id', $userid)->count();
-        } else {
-            $count = '';
-        }
-        return view('home.product_details', compact('data', 'count'));
-    }
-    public function add_cart($id)
-    {
-        if (Auth::id()) {
-            $user = Auth::user();
-            $userid = $user->id;
-            $product = Product::find($id);
-
-            if (!$product) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Product not found'
-                ], 404);
-            }
-
-            // Check if product already exists in cart
-            $existing_cart = Cart::where('product_id', $id)
-                ->where('user_id', $userid)
-                ->first();
-
-            if ($existing_cart) {
-                // Update quantity if product exists
-                $existing_cart->quantity += 1;
-                $existing_cart->save();
-            } else {
-                // Add new product to cart
-                $cart = new Cart();
-                $cart->user_id = $userid;
-                $cart->product_id = $id;
-                $cart->quantity = 1;
-                $cart->save();
-            }
-
-            // Get updated cart count (sum of all quantities)
-            $cartCount = Cart::where('user_id', $userid)->sum('quantity');
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Product added to cart successfully!',
-                'cartCount' => $cartCount
-            ]);
-        } else {
-            return response()->json([
-                'success' => false,
-                'message' => 'Please login first!'
-            ], 401);
+        try {
+            $data = Product::where('slug', $slug)->firstOrFail();
+            $count = Auth::check() ? Cart::where('user_id', Auth::id())->count() : '';
+            return view('home.product_details', compact('data', 'count'));
+        } catch (\Exception $e) {
+            Log::error('Error loading product details: ' . $e->getMessage());
+            return back()->with('error', 'Product not found.');
         }
     }
+
     public function mycart()
     {
-        if (Auth::id()) {
+        try {
             $user = Auth::user();
-            $userid = $user->id;
-            $count = Cart::where('user_id', $userid)->count();
-            $cart = Cart::with('product')->where('user_id', $userid)->get();
-
-        } else {
-            $count = '';
-            $cart = collect([]);
+            $count = Auth::check() ? Cart::where('user_id', $user->id)->count() : '';
+            $cart = Auth::check() ? Cart::with('product')->where('user_id', $user->id)->get() : collect([]);
+            return view('home.mycart', compact('count', 'cart', 'user'));
+        } catch (\Exception $e) {
+            Log::error('Error fetching cart data: ' . $e->getMessage());
+            return back()->with('error', 'An error occurred while loading your cart.');
         }
-
-        return view('home.mycart', compact('count', 'cart','user'));
     }
 
     public function remove_cart($id)
     {
         try {
-            $cart = Cart::find($id);
-            if (!$cart) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Cart item not found'
-                ], 404);
-            }
-
+            $cart = Cart::findOrFail($id);
             $cart->delete();
             $cartCount = Cart::where('user_id', Auth::id())->count();
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Product removed from cart successfully',
-                'cartCount' => $cartCount
-            ]);
+            return response()->json(['success' => true, 'message' => 'Product removed from cart successfully', 'cartCount' => $cartCount]);
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Error removing product from cart'
-            ], 500);
+            Log::error('Error removing cart item: ' . $e->getMessage());
+            return response()->json(['success' => false, 'message' => 'Error removing product from cart'], 500);
         }
     }
 
     public function confirm_order(Request $request)
     {
-      
         try {
-           
-            // Validate request
-            $request->validate([
-                'name' => 'required|max:255',
-                'phone' => 'required|max:20',
-                'address' => 'required|max:1000'
-            ]);
-           
-          
-
-            // Get user's cart items
+            $request->validate(['name' => 'required|max:255', 'phone' => 'required|max:20', 'address' => 'required|max:1000']);
             $cartItems = Cart::where('user_id', Auth::id())->get();
-
             if ($cartItems->isEmpty()) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Your cart is empty!'
-                ], 400);
+                return response()->json(['success' => false, 'message' => 'Your cart is empty!'], 400);
             }
-
-            // Generate unique invoice number
+            DB::beginTransaction();
             $invoice_no = 'INV-' . time() . '-' . Auth::id();
             $total_amount = 0;
 
-            // Start database transaction
-            DB::beginTransaction();
-
-            try {
-                // Create orders for each cart item
-                foreach ($cartItems as $item) {
-                    $order = new Order();
-                    $order->user_id = Auth::id();
-                    $order->product_id = $item->product_id;
-                    $order->quantity = $item->quantity;
-                    // $order->price = $item->product->price;
-                    // $order->total_price = $item->quantity * $item->product->price;
-                    $order->invoice_no = $invoice_no;
-                    $order->name = $request->name;
-                    $order->phone = $request->phone;
-                    $order->rec_address = $request->address;
-                    $order->payment_status = 'pending';
-                    $order->status = 'in process';
-                    $order->delivery_status = 'pending';
-                    // dd($order);
-                    $order->save();
-
-                    $total_amount += $order->total_price;
-                }
-                
-
-                // Clear the cart
-                Cart::where('user_id', Auth::id())->delete();
-
-                // Store invoice data in session
-                Session::put('invoice_data', [
-                    'invoice_no' => $invoice_no,
-                    'order_date' => now()->format('F d, Y h:i A'),
-                    'customer_name' => $request->name,
-                    'customer_phone' => $request->phone,
-                    'customer_address' => $request->address,
-                    'total_amount' => $total_amount
-                ]);
-
-                // Commit transaction
-                DB::commit();
-
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Order placed successfully!',
-                    'redirect_url' => route('show.invoice', ['invoice_no' => $invoice_no])
-                ]);
-            } catch (\Exception $e) {
-                // Rollback transaction on error
-                DB::rollBack();
-                throw $e;
+            foreach ($cartItems as $item) {
+                $order = new Order();
+                $order->user_id = Auth::id();
+                $order->product_id = $item->product_id;
+                $order->quantity = $item->quantity;
+                $order->invoice_no = $invoice_no;
+                $order->name = $request->name;
+                $order->phone = $request->phone;
+                $order->rec_address = $request->address;
+                $order->payment_status = 'pending';
+                $order->status = 'in process';
+                $order->delivery_status = 'pending';
+                $order->save();
+                $total_amount += $order->total_price;
             }
+            Cart::where('user_id', Auth::id())->delete();
+            Session::put('invoice_data', compact('invoice_no', 'total_amount'));
+            DB::commit();
+            return response()->json(['success' => true, 'message' => 'Order placed successfully!', 'redirect_url' => route('show.invoice', ['invoice_no' => $invoice_no])]);
         } catch (\Exception $e) {
-            Log::error('Error placing order: ' . $e->getMessage(), [
-                'user_id' => Auth::id(),
-                'error' => $e
-            ]);
-
-            return response()->json([
-                'success' => false,
-                'message' => 'An error occurred while placing your order. Please try again.'
-            ], 500);
+            DB::rollBack();
+            Log::error('Error placing order: ' . $e->getMessage());
+            return response()->json(['success' => false, 'message' => 'An error occurred while placing your order. Please try again.'], 500);
         }
     }
 
     public function showInvoice($invoice_no)
     {
         try {
-            $orders = Order::with(['product', 'user'])
-                ->where('invoice_no', $invoice_no)
-                ->get();
-
+            $orders = Order::with(['product', 'user'])->where('invoice_no', $invoice_no)->get();
             if ($orders->isEmpty()) {
                 return redirect()->route('myorders')->with('error', 'Invoice not found.');
             }
 
-            $invoice_data = Session::get('invoice_data') ?? [
+            $firstOrder = $orders->first();
+            $invoice_data = [
                 'invoice_no' => $invoice_no,
-                'order_date' => Carbon::parse($orders->first()->created_at)->format('F d, Y h:i A'),
-                'customer_name' => $orders->first()->user->name,
-                'customer_phone' => $orders->first()->phone,
-                'customer_address' => $orders->first()->address
+                'order_date' => $firstOrder->created_at->format('Y-m-d'),
+                'customer_name' => $firstOrder->user->name,
+                'customer_phone' => $firstOrder->user->phone ?? 'N/A',
+                'customer_address' => $firstOrder->user->address ?? 'N/A'
             ];
+            dd($invoice_data);
 
             return view('home.invoice', compact('orders', 'invoice_data'));
         } catch (\Exception $e) {
-            Log::error('Error showing invoice: ' . $e->getMessage(), [
-                'invoice_no' => $invoice_no,
-                'error' => $e
-            ]);
+            Log::error('Error showing invoice: ' . $e->getMessage());
             return redirect()->route('myorders')->with('error', 'An error occurred while loading the invoice.');
         }
     }
 
-    public function myorders()
+    public function downloadInvoice($invoice_no)
     {
-        $user = Auth::user()->id;
-        $count = cart::where('user_id', $user)->get()->count();
-        $order = Order::where('user_id', $user)->get();
-        return view('home.order', compact('count', 'order'));
-    }
-    public function shop()
-    {
-        $product = product::all();
-        if (Auth::id()) {
-            $user = Auth::user();
-            $userid = $user->id;
-            $count = Cart::where('user_id', $userid)->count();
-        } else {
-            $count = '';
+        try {
+            $orders = Order::with(['product', 'user'])->where('invoice_no', $invoice_no)->get();
+            if ($orders->isEmpty()) {
+                return redirect()->route('myorders')->with('error', 'Invoice not found.');
+            }
+
+            $firstOrder = $orders->first();
+            $invoice_data = [
+                'invoice_no' => $invoice_no,
+                'order_date' => $firstOrder->created_at->format('Y-m-d'),
+                'customer_name' => $firstOrder->user->name,
+                'customer_phone' => $firstOrder->user->phone ?? 'N/A',
+                'customer_address' => $firstOrder->user->address ?? 'N/A'
+            ];
+
+            $pdf = Pdf::loadView('home.pdf_invoice', compact('orders', 'invoice_data'));
+            return $pdf->download($invoice_no . '.pdf');
+        } catch (\Exception $e) {
+            Log::error('Error generating PDF invoice: ' . $e->getMessage());
+            return redirect()->route('myorders')->with('error', 'An error occurred while generating the PDF.');
         }
-
-        return view('home.shop', compact('product', 'count'));
     }
-
-    public function why()
-    {
-
-        if (Auth::id()) {
-            $user = Auth::user();
-            $userid = $user->id;
-            $count = Cart::where('user_id', $userid)->count();
-        } else {
-            $count = '';
+     public function shop(){
+        try {
+            $products = Product::all();
+            return view('home.shop', compact('products'));
+        } catch (\Exception $e) {
+            Log::error('Error loading shop page: ' . $e->getMessage());
+            return back()->with('error', 'An error occurred while loading the shop page.');
         }
-
-        return view('home.why', compact('count'));
-    }
-
-    public function   testimonial()
-    {
-
-        if (Auth::id()) {
-            $user = Auth::user();
-            $userid = $user->id;
-            $count = Cart::where('user_id', $userid)->count();
-        } else {
-            $count = '';
-        }
-
-        return view('home.testimonial', compact('count'));
-    }
-
-    public function contact()
-    {
-
-        if (Auth::id()) {
-            $user = Auth::user();
-            $userid = $user->id;
-            $count = Cart::where('user_id', $userid)->count();
-        } else {
-            $count = '';
-        }
-
-        return view('home.contact', compact('count'));
-    }
+     }
 }

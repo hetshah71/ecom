@@ -4,6 +4,8 @@
 <head>
     @include('admin.css')
     @vite("resources/css/app.css")
+    <script src="{{asset('admincss/vendor/jquery/jquery.min.js')}}"></script>
+    <script src="{{asset('admincss/vendor/jquery-validation/jquery.validate.min.js')}}"></script>
 </head>
 
 <body>
@@ -16,12 +18,13 @@
                 <div class="max-w-3xl mx-auto p-8 bg-black bg-opacity-20 rounded-lg shadow-lg">
                     <h1 class="text-white text-2xl font-semibold mb-8 text-center">Add Category</h1>
 
-                    <form action="{{ url('/admin/add_category') }}" method="post">
+                    <form id="category-form" action="{{ url('/admin/add_category') }}" method="post">
                         @csrf
                         <div class="mb-6">
                             <!-- <label class="block mb-2 text-sm font-medium text-gray-300">Category Name</label> -->
-                            <input type="text" name="category" placeholder="Enter category name" required
+                            <input type="text" name="category" placeholder="Enter category name"
                                 class="w-full px-3 py-3 bg-gray-300 bg-opacity-5 border border-white border-opacity-10 rounded-md text-white text-sm transition-all duration-300 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-25">
+                            <span class="error-message text-red-500 text-sm mt-1 hidden"></span>
                         </div>
 
                         <div class="mb-6">
@@ -30,6 +33,42 @@
                             </button>
                         </div>
                     </form>
+
+                    <script>
+                        $(function() {
+                            $('#category-form').validate({
+                                rules: {
+                                    category: {
+                                        required: true,
+                                        minlength: 2,
+                                        maxlength: 50
+                                    }
+                                },
+                                messages: {
+                                    category: {
+                                        required: 'Please enter a category name',
+                                        minlength: 'Category name must be at least 2 characters long',
+                                        maxlength: 'Category name cannot exceed 50 characters'
+                                    }
+                                },
+                                errorElement: 'span',
+                                errorClass: 'error-message text-red-500 text-sm mt-1',
+                                errorPlacement: function(error, element) {
+                                    error.insertAfter(element);
+                                    error.show();
+                                },
+                                highlight: function(element) {
+                                    $(element).addClass('border-red-500').removeClass('border-white border-opacity-10');
+                                },
+                                unhighlight: function(element) {
+                                    $(element).removeClass('border-red-500').addClass('border-white border-opacity-10');
+                                },
+                                success: function(label) {
+                                    label.remove();
+                                }
+                            });
+                        });
+                    </script>
 
                     <div class="w-11/12 mx-auto mt-8 p-4 border-2 border-green-500 border-opacity-30 rounded-lg">
                         <table class="w-full">
@@ -83,13 +122,10 @@
         }
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="{{asset('admincss/vendor/jquery/jquery.min.js')}}"></script>
-    <script src="{{asset('admincss/vendor/popper.js/umd/popper.min.js')}}"> </script>
+    <script src="{{asset('admincss/vendor/popper.js/umd/popper.min.js')}}"></script>
     <script src="{{asset('admincss/vendor/bootstrap/js/bootstrap.min.js')}}"></script>
-    <script src="{{asset('admincss/vendor/jquery.cookie/jquery.cookie.js')}}"> </script>
+    <script src="{{asset('admincss/vendor/jquery.cookie/jquery.cookie.js')}}"></script>
     <script src="{{asset('admincss/vendor/chart.js/Chart.min.js')}}"></script>
-    <script src="{{asset('admincss/vendor/jquery-validation/jquery.validate.min.js')}}">
-    </script>
     <script src="{{asset('admincss/js/charts-home.js')}}"></script>
     <script src="{{asset('admincss/js/front.js')}}"></script>
 </body>

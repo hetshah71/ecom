@@ -55,35 +55,39 @@
                             <th>Change Status</th>
                             <th>Print pdf</th>
                         </tr>
-                        @foreach($data as $data)
+
+                        @foreach($orders as $order)
                         <tr>
-                            <td>{{$data->name}}</td>
-                            <td>{{$data->rec_address}}</td>
-                            <td>{{$data->phone}}</td>
-                            <td>{{$data->product->title}}</td>
-                            <td>{{$data->product->price}}</td>
+                            <td>{{$order->name}}</td>
+                            <td>{{$order->rec_address}}</td>
+                            <td>{{$order->phone}}</td>
+                            <td>{{$order->product->title}}</td>
+                            <td>{{$order->product->price}}</td>
                             <td>
-                                <img src="{{asset('storage/'.$data->product->image)}}" alt="{{$data->product->title}}" width="100px">
+                                <img src="{{asset('storage/'.$order->product->image)}}" alt="{{$order->product->title}}" width="100px">
                             </td>
                             <td>
-                                @if($data->status == 'in process')
-                                <span style="color:red; font-weight:bold" >{{$data->status}}</span>
+                                @if($order->status == 'in process')
+                                <span style="color:red; font-weight:bold">{{$order->status}}</span>
                                 @else
-                                <span>{{$data->status}}</span>
+                                <span>{{$order->status}}</span>
                                 @endif
                             </td>
                             <td>
-                                <a class="btn btn-primary" href="{{url('/admin/on_the_way',$data->id)}}">On the way</a>
-                                <a class="btn btn-success" href="{{url('/admin/delivered',$data->id)}}">Delivered</a>
+                                <a class="btn btn-primary" href="{{url('/admin/on_the_way',$order->id)}}">On the way</a>
+                                <a class="btn btn-success" href="{{url('/admin/delivered',$order->id)}}">Delivered</a>
                             </td>
                             <td>
-                                <a class="btn btn-secondary"href="{{url('/admin/print_pdf',$data->id)}}">Print PDF</a>
-        
-                                </td>
+                                <a class="btn btn-secondary" href="{{url('/admin/print_pdf',$order->id)}}">Print PDF</a>
+                            </td>
                         </tr>
                         @endforeach
                     </table>
+
                 </div>
+            </div>
+            <div class="d-flex justify-content-center mt-4">
+                {{ $orders->links() }}
             </div>
         </div>
     </div>
