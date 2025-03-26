@@ -32,6 +32,10 @@
                  <a href="{{url('/admin/blocks')}}"> <i class="icon-grid"></i>Blocks
                  </a>
              </li>
+             <li>
+                 <a href="{{url('/admin/pages')}}"> <i class="icon-grid"></i>Pages
+                 </a>
+             </li>
 
          </ul>
      </nav>

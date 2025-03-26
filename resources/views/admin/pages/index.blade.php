@@ -12,16 +12,16 @@
     <div class="page-content">
         <div class="page-header">
             <div class="container-fluid">
-                <h2 class="h5 no-margin-bottom">Blocks Management</h2>
+                <h2 class="h5 no-margin-bottom">pages Management</h2>
             </div>
         </div>
         <section class="no-padding-top">
             <div class="container-fluid">
                 <div class="block">
                     <div class="title d-flex justify-content-between align-items-center">
-                        <strong>All Blocks</strong>
-                        <a href="{{route('admin.blocks.create')}}" class="btn btn-primary btn-sm">
-                            <i class="fa fa-plus"></i> Add New Block
+                        <strong>All pages</strong>
+                        <a href="{{route('admin.pages.create')}}" class="btn btn-primary btn-sm">
+                            <i class="fa fa-plus"></i> Add New Page
                         </a>
                     </div>
                     <div class="table-responsive">
@@ -35,19 +35,19 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($blocks as $block)
+                                @foreach($pages as $page)
                                 <tr>
-                                    <td>{{$block->title}}</td>
-                                    <td>{{$block->slug}}</td>
-                                    <td><span class="badge badge-{{$block->status == 'active' ? 'success' : 'danger'}}">{{$block->status}}</span></td>
+                                    <td>{{$page->title}}</td>
+                                    <td>{{$page->slug}}</td>
+                                    <td><span class="badge badge-{{$page->status == 'active' ? 'success' : 'danger'}}">{{$page->status}}</span></td>
                                     <td>
-                                        <a href="{{route('admin.blocks.edit', $block->slug)}}" class="btn btn-warning btn-sm">
+                                        <a href="{{route('admin.pages.edit', $page->slug)}}" class="btn btn-warning btn-sm">
                                             <i class="fa fa-edit"></i> Edit
                                         </a>
-                                        <form action="{{route('admin.blocks.delete',$block->slug)}}" method="POST" class="d-inline">
+                                        <form action="{{route('admin.pages.delete',$page->slug)}}" method="POST" class="d-inline">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this block?')">
+                                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this page?')">
                                                 <i class="fa fa-trash"></i> Delete
                                             </button>
                                         </form>

@@ -1,6 +1,6 @@
 <section class="info_section  layout_padding2-top">
-    @if(!empty(getBlock('footerblock'))) 
-        {!! getBlock('footerblock')->content !!}
+    @if(!empty(getBlock('footerblock')))
+    {!! getBlock('footerblock')->content !!}
     @else
     <div class="social_container">
         <div class="social_box">
@@ -25,6 +25,9 @@
                     <h6>
                         ABOUT US
                     </h6>
+                    <a href={{route('terms')}}>Terms & conditions</a>
+
+
                     <p>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed doLorem ipsum dolor sit amet, consectetur adipiscing elit, sed doLorem ipsum dolor sit amet,
                     </p>
@@ -71,7 +74,7 @@
                 </div>
             </div>
         </div>
-    </div> 
+    </div>
     <!-- footer section -->
     <footer class=" footer_section">
         <div class="container">
@@ -80,7 +83,7 @@
                 <a href="https://html.design/">Web Tech Knowledge</a>
             </p>
         </div>
-    </footer> 
+    </footer>
     @endif
 
 

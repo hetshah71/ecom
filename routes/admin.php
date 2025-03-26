@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\StaticBlockController;
+use App\Http\Controllers\Admin\StaticPageController;
 
 require __DIR__ . '/auth.php';
 Route::prefix('admin')->group(function () {
@@ -52,5 +53,16 @@ Route::prefix('admin')->group(function () {
         Route::patch('/{slug}/update', [StaticBlockController::class, 'update'])->name('admin.blocks.update');
 
         Route::delete('/{slug}/delete', [StaticBlockController::class, 'destroy'])->name('admin.blocks.delete');
+    });
+    Route::prefix('pages')->group(function () {
+        Route::get('/', [StaticPageController::class, 'index'])->name('admin.pages.index');
+
+        Route::get('/create', [StaticPageController::class, 'create'])->name('admin.pages.create');
+        Route::post('/create', [StaticPageController::class, 'store'])->name('admin.pages.store');
+
+        Route::get('/{slug}/edit', [StaticPageController::class, 'edit'])->name('admin.pages.edit');
+        Route::patch('/{slug}/update', [StaticPageController::class, 'update'])->name('admin.pages.update');
+
+        Route::delete('/{slug}/delete', [StaticPageController::class, 'destroy'])->name('admin.pages.delete');
     });
 });

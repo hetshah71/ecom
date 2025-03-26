@@ -2,6 +2,7 @@
 
 @include('admin.php');
 
+use App\Http\Controllers\StaticPageController as StaticPageUser;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
@@ -42,6 +43,8 @@ Route::get('why', [HomeController::class, 'why']);
 Route::get('contact', [HomeController::class, 'contact']);
 
 Route::get('testimonial', [HomeController::class, 'testimonial']);
+
+Route::get('terms', [StaticPageUser::class, 'show'])->name('terms');
 
 // Cart Routes
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
