@@ -1,6 +1,7 @@
-{!! getBlock('hello') !!}
-
 <section class="info_section  layout_padding2-top">
+    @if(!empty(getBlock('footerblock'))) 
+        {!! getBlock('footerblock')->content !!}
+    @else
     <div class="social_container">
         <div class="social_box">
             <a href="">
@@ -70,7 +71,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> 
     <!-- footer section -->
     <footer class=" footer_section">
         <div class="container">
@@ -79,8 +80,9 @@
                 <a href="https://html.design/">Web Tech Knowledge</a>
             </p>
         </div>
-    </footer>
-    <!-- footer section -->
+    </footer> 
+    @endif
+
 
 </section>
 

@@ -64,7 +64,6 @@
     <script>
         $('.block-title').on("input", function(e) {
             e.preventDefault();
-            console.log("hii");
             let slug = $(this).val()
                 .toLowerCase()
                 .replace(/ /g, "-") // Replace spaces with hyphens

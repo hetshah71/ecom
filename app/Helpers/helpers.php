@@ -3,7 +3,11 @@
 use App\Models\StaticBlock;
 
     function getBlock($slug){
-        $block=StaticBlock::where('slug', $slug)->first();
-        return $block->content;
+        return StaticBlock::where('slug', $slug)->where('status',1)->first();
+        // if($block){
+        //     return $block->content;
+        // }
+        // return '';
+        // return $block->content;
     }
 ?>
