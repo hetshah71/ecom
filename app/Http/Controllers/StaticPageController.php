@@ -8,8 +8,11 @@ use App\Models\StaticPage;
 
 class StaticPageController extends Controller
 {
-    public function show(string $slug=''){
-        $page = StaticPage::where('slug', $slug)->first();
+    public function show(string $slug='terms'){
+        $page = StaticPage::where('slug', $slug)->where('status',1)->first();
+        if(!$page){
+            abort(404);
+        }
         return view('home.terms', compact('page'));
     }
 }

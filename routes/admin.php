@@ -54,6 +54,7 @@ Route::prefix('admin')->group(function () {
 
         Route::delete('/{slug}/delete', [StaticBlockController::class, 'destroy'])->name('admin.blocks.delete');
     });
+    
     Route::prefix('pages')->group(function () {
         Route::get('/', [StaticPageController::class, 'index'])->name('admin.pages.index');
 

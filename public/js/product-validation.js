@@ -98,7 +98,7 @@ $(document).ready(function () {
             $(element).addClass("border-red-500").removeClass("border-white");
         },
         unhighlight: function (element) {
-            $(element).removeClass("border-red-500").addClass("border-white");
+            $(element).addClass("border-white").removeClass("border-red-500");
         },
     });
 });

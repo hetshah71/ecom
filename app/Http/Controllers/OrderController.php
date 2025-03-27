@@ -7,6 +7,9 @@ use App\Models\Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use App\Events\OrderPlaced;
+use Barryvdh\DomPDF\Facade\Pdf;
+use App\Events\InvoiceGenerated;
 
 class OrderController extends Controller
 {
@@ -42,6 +45,14 @@ class OrderController extends Controller
 
             // Clear the cart after successful order creation
             Cart::where('user_id', $userId)->delete();
+
+            // Dispatch the OrderPlaced event
+            event(new OrderPlaced($order));
+
+            // Generate and send invoice
+            $pdf = Pdf::loadView('pdf.invoice', compact('order'))->output();
+            event(new InvoiceGenerated($order, $pdf));
+
             return redirect()->route('orders.show', $order->id)
                 ->with('success', 'Order placed successfully!');
         } catch (\Exception $e) {
@@ -56,5 +67,29 @@ class OrderController extends Controller
         }
 
         return view('orders.show', compact('order'));
+    }
+    public function placeOrder(Request $request)
+    {
+        $order = Order::create([
+            'user_id' => Auth::id(),
+            'invoice_no' => 'INV-' . time() . '-' . Auth::id(),
+            'payment_status' => 'pending',
+            'delivery_status' => 'processing',
+            'order_status' => 'confirmed'
+        ]); // Order placement logic
+
+        event(new OrderPlaced($order));
+
+        return response()->json(['message' => 'Order placed successfully.']);
+    }
+    public function sendInvoice($orderId)
+    {
+        $order = Order::find($orderId);
+
+        $pdf = Pdf::loadView('pdf.invoice', compact('order'))->output();
+
+        event(new InvoiceGenerated($order, $pdf));
+
+        return response()->json(['message' => 'Invoice sent successfully.']);
     }
 }

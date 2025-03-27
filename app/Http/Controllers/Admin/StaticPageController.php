@@ -67,8 +67,8 @@ class StaticPageController extends Controller
     public function edit(string $slug)
     {
         try {
-            $Page = StaticPage::where('slug', $slug)->first();
-            return view('admin.pages.edit', compact('Page'));
+            $page = StaticPage::where('slug', $slug)->first();
+            return view('admin.pages.edit', compact('page'));
         } catch (Exception $e) {
             return redirect()->back()->with('error', 'Failed to retrieve static Page details!');
         }

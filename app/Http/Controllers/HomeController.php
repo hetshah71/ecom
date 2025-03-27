@@ -33,7 +33,8 @@ class HomeController extends Controller
             $product = Product::count();
             $order = Order::count();
             $delivered = Order::where('status', 'Delivered')->count();
-            return view('admin.index', compact('user', 'product', 'order', 'delivered'));
+            $orders = Order::with('product')->latest()->get();
+            return view('admin.index', compact('user', 'product', 'order', 'delivered', 'orders'));
         } catch (\Exception $e) {
             Log::error('Error fetching index data: ' . $e->getMessage());
             return back()->with('error', 'An error occurred while loading data.');
@@ -150,7 +151,7 @@ class HomeController extends Controller
                 'customer_phone' => $firstOrder->user->phone ?? 'N/A',
                 'customer_address' => $firstOrder->user->address ?? 'N/A'
             ];
-            dd($invoice_data);
+            // dd($invoice_data);
 
             return view('home.invoice', compact('orders', 'invoice_data'));
         } catch (\Exception $e) {
@@ -183,7 +184,8 @@ class HomeController extends Controller
             return redirect()->route('myorders')->with('error', 'An error occurred while generating the PDF.');
         }
     }
-     public function shop(){
+    public function shop()
+    {
         try {
             $products = Product::all();
             return view('home.shop', compact('products'));
@@ -191,5 +193,5 @@ class HomeController extends Controller
             Log::error('Error loading shop page: ' . $e->getMessage());
             return back()->with('error', 'An error occurred while loading the shop page.');
         }
-     }
+    }
 }

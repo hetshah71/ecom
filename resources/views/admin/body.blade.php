@@ -1,70 +1,168 @@
-<h2 class="h5 no-margin-bottom">Dashboard</h2>
-</div>
-</div>
-<section class="no-padding-top no-padding-bottom">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-3 col-sm-6">
-                <div class="statistic-block block">
-                    <div class="progress-details d-flex align-items-end justify-content-between">
-                        <div class="title">
-                            <div class="icon"><i class="icon-user-1"></i></div><strong>Total Clients</strong>
-                        </div>
-                        <div class="number dashtext-1">{{$user}}</div>
+<div class="container-fluid px-4 py-6">
+    <h2 class="text-3xl font-bold text-white mb-6">Dashboard Overview</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="bg-gray-800 rounded-xl p-6 shadow-xl hover:shadow-2xl transition-shadow duration-300">
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center space-x-4">
+                    <div class="p-3 bg-amber-600/20 rounded-lg">
+                        <svg class="w-6 h-6 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        </svg>
                     </div>
-                    <div class="progress progress-template">
-                        <div role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" class="progress-bar progress-bar-template dashbg-1"></div>
-                    </div>
+                    <h3 class="text-lg font-semibold text-gray-100">Total Clients</h3>
                 </div>
+                <span class="text-2xl font-bold text-amber-500">{{$user}}</span>
             </div>
-            <div class="col-md-3 col-sm-6">
-                <div class="statistic-block block">
-                    <div class="progress-details d-flex align-items-end justify-content-between">
-                        <div class="title">
-                            <div class="icon"><i class="icon-contract"></i></div><strong>Total Products</strong>
-                        </div>
-                        <div class="number dashtext-2">{{ $product }}</div>
-                    </div>
-                    <div class="progress progress-template">
-                        <div role="progressbar" style="width: 70%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" class="progress-bar progress-bar-template dashbg-2"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 col-sm-6">
-                <div class="statistic-block block">
-                    <div class="progress-details d-flex align-items-end justify-content-between">
-                        <div class="title">
-                            <div class="icon"><i class="icon-paper-and-pencil"></i></div><strong>Total Orders</strong>
-                        </div>
-                        <div class="number dashtext-3">{{$order}}</div>
-                    </div>
-                    <div class="progress progress-template">
-                        <div role="progressbar" style="width: 55%" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100" class="progress-bar progress-bar-template dashbg-3"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 col-sm-6">
-                <div class="statistic-block block">
-                    <div class="progress-details d-flex align-items-end justify-content-between">
-                        <div class="title">
-                            <div class="icon"><i class="icon-writing-whiteboard"></i></div><strong>Total Deliverd</strong>
-                        </div>
-                        <div class="number dashtext-4">{{ $delivered }}</div>
-                    </div>
-                    <div class="progress progress-template">
-                        <div role="progressbar" style="width: 35%" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100" class="progress-bar progress-bar-template dashbg-4"></div>
-                    </div>
+            <div class="relative pt-1">
+                <div class="overflow-hidden h-2 text-xs flex rounded bg-amber-600/20">
+                    <div class="w-[30%] shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-amber-500"></div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
 
-<footer class="footer">
-    <div class="footer__block block no-margin-bottom">
-        <div class="container-fluid text-center">
-            <!-- Please do not remove the backlink to us unless you support us at https://bootstrapious.com/donate. It is part of the license conditions. Thank you for understanding :)-->
-            <p class="no-margin-bottom">2018 &copy; Your company. Download From <a target="_blank" href="https://templateshub.net">Templates Hub</a>.</p>
+        <div class="bg-gray-800 rounded-xl p-6 shadow-xl hover:shadow-2xl transition-shadow duration-300">
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center space-x-4">
+                    <div class="p-3 bg-blue-600/20 rounded-lg">
+                        <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-100">Total Products</h3>
+                </div>
+                <span class="text-2xl font-bold text-blue-500">{{$product}}</span>
+            </div>
+            <div class="relative pt-1">
+                <div class="overflow-hidden h-2 text-xs flex rounded bg-blue-600/20">
+                    <div class="w-[70%] shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-500"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-gray-800 rounded-xl p-6 shadow-xl hover:shadow-2xl transition-shadow duration-300">
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center space-x-4">
+                    <div class="p-3 bg-emerald-600/20 rounded-lg">
+                        <svg class="w-6 h-6 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-100">Total Orders</h3>
+                </div>
+                <span class="text-2xl font-bold text-emerald-500">{{$order}}</span>
+            </div>
+            <div class="relative pt-1">
+                <div class="overflow-hidden h-2 text-xs flex rounded bg-emerald-600/20">
+                    <div class="w-[55%] shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-emerald-500"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-gray-800 rounded-xl p-6 shadow-xl hover:shadow-2xl transition-shadow duration-300">
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center space-x-4">
+                    <div class="p-3 bg-purple-600/20 rounded-lg">
+                        <svg class="w-6 h-6 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-100">Total Delivered</h3>
+                </div>
+                <span class="text-2xl font-bold text-purple-500">{{$delivered}}</span>
+            </div>
+            <div class="relative pt-1">
+                <div class="overflow-hidden h-2 text-xs flex rounded bg-purple-600/20">
+                    <div class="w-[35%] shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-purple-500"></div>
+                </div>
+            </div>
         </div>
     </div>
-</footer>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="bg-gray-800 rounded-xl shadow-xl p-6">
+            <h3 class="text-xl font-semibold text-white mb-4">Recent Orders</h3>
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr class="border-b border-gray-700">
+                            <th class="p-3 text-sm font-bold text-gray-100 text-left">Customer</th>
+                            <th class="p-3 text-sm font-bold text-gray-100 text-left">Product</th>
+                            <th class="p-3 text-sm font-bold text-gray-100 text-left">Status</th>
+                            <th class="p-3 text-sm font-bold text-gray-100 text-left">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-700">
+                        @foreach($orders->take(5) as $order)
+                        <tr class="hover:bg-gray-700/50 transition-colors duration-200">
+                            <td class="p-3 text-sm text-gray-300">{{$order->name}}</td>
+                            <td class="p-3 text-sm text-gray-300">{{$order->product->title}}</td>
+                            <td class="p-3">
+                                @if($order->status == 'in process')
+                                <span class="px-2 py-1 text-xs font-medium rounded-full bg-amber-600/20 text-amber-500">{{$order->status}}</span>
+                                @elseif($order->status == 'on the way')
+                                <span class="px-2 py-1 text-xs font-medium rounded-full bg-blue-600/20 text-blue-500">{{$order->status}}</span>
+                                @else
+                                <span class="px-2 py-1 text-xs font-medium rounded-full bg-emerald-600/20 text-emerald-500">{{$order->status}}</span>
+                                @endif
+                            </td>
+                            <td class="p-3 text-sm text-gray-300">${{number_format($order->product->price, 2)}}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="bg-gray-800 rounded-xl shadow-xl p-6">
+            <h3 class="text-xl font-semibold text-white mb-4">Sales Analytics</h3>
+            <canvas id="salesChart" class="w-full"></canvas>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const ctx = document.getElementById('salesChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Sales',
+                    data: [30, 45, 35, 50, 40, 60],
+                    borderColor: '#10B981',
+                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        },
+                        ticks: {
+                            color: '#9CA3AF'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        },
+                        ticks: {
+                            color: '#9CA3AF'
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>
