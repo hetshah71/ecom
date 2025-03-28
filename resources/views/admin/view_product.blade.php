@@ -20,6 +20,11 @@
                             <i class="fa fa-search text-gray-400"></i>
                         </div>
                     </div>
+                    <div class="flex justify-end mb-4">
+                        <a href="{{ url('/admin/deleted_products') }}" class="px-4 py-2 bg-blue-500 text-white font-medium rounded hover:bg-blue-600 transition-all duration-300">
+                            View Deleted Products
+                        </a>
+                    </div>
                     <div class="bg-opacity-20 bg-black rounded-lg shadow-lg border border-opacity-10 border-white p-4 overflow-x-auto">
                         <table class="w-full border-collapse">
                             <tr>
@@ -31,22 +36,23 @@
                                 <th class="bg-blue-900 bg-opacity-10 text-white text-sm font-semibold uppercase tracking-wider p-1.5 border-b border-blue-900 border-opacity-20">Image</th>
                                 <th class="bg-blue-900 bg-opacity-10 text-white text-sm font-semibold uppercase tracking-wider p-1.5 border-b border-blue-900 border-opacity-20">Action</th>
                             </tr>
-                            @foreach($product as $products)
+                            @foreach($products as $product)
                             <tr class="hover:bg-blue-900 hover:bg-opacity-5 transition-colors duration-200">
-                                <td class="border-b border-white/5 text-center p-1.5 text-gray-300 text-sm align-middle">{{$products->title}}</td>
-                                <td class="border-b border-white/5 text-center p-1.5 text-gray-300 text-sm align-middle">{!!Str::limit($products->description,50)!!}</td>
-                                <td class="border-b border-white/5 text-center p-1.5 text-gray-300 text-sm align-middle">{{$products->category}}</td>
-                                <td class="border-b border-white/5 text-center p-1.5 text-gray-300 text-sm align-middle">{{$products->price}}</td>
-                                <td class="border-b border-white/5 text-center p-1.5 text-gray-300 text-sm align-middle">{{$products->quantity}}</td>
+                                <td class="border-b border-white/5 text-center p-1.5 text-gray-300 text-sm align-middle">{{$product->title}}</td>
+                                <td class="border-b border-white/5 text-center p-1.5 text-gray-300 text-sm align-middle">{!!Str::limit($product->description,50)!!}</td>
+                                <td class="border-b border-white/5 text-center p-1.5 text-gray-300 text-sm align-middle">{{$product->category}}</td>
+                                <td class="border-b border-white/5 text-center p-1.5 text-gray-300 text-sm align-middle">{{$product->price}}</td>
+                                <td class="border-b border-white/5 text-center p-1.5 text-gray-300 text-sm align-middle">{{$product->quantity}}</td>
                                 <td class="border-b border-white/5 text-center p-1.5 text-gray-300 text-sm align-middle">
-                                    <img src="{{ asset('storage/'.$products->image) }}" alt="{{$products->title}}" class="max-w-[60px] rounded-lg shadow-sm transition-transform duration-200 hover:scale-105">
+                                 
+                                    <img src="{{ asset('storage/'.$product->image) }}" alt="{{$product->title}}" class="max-w-[60px] rounded-lg shadow-sm transition-transform duration-200 hover:scale-105">
                                 </td>
                                 <td class="border-b border-white/5 text-center p-1.5 text-gray-300 text-sm align-middle">
                                     <div class="flex justify-center items-center gap-0.5">
-                                        <a class="w-7 h-7 bg-blue-600 bg-opacity-80 rounded-lg flex items-center justify-center text-white border border-white border-opacity-10 transition-all duration-200 hover:-translate-y-1 hover:shadow-lg" href="{{url('/admin/edit_product',$products->id)}}" title="Edit Product">
+                                        <a class="w-7 h-7 bg-blue-600 bg-opacity-80 rounded-lg flex items-center justify-center text-white border border-white border-opacity-10 transition-all duration-200 hover:-translate-y-1 hover:shadow-lg" href="{{url('/admin/edit_product',$product->id)}}" title="Edit Product">
                                             <i class="fa fa-pencil"></i>
                                         </a>
-                                        <a class="w-7 h-7 bg-red-600 bg-opacity-80 rounded-lg flex items-center justify-center text-white border border-white border-opacity-10 transition-all duration-200 hover:-translate-y-1 hover:shadow-lg" onclick="confirmation(event)" href="{{url('/admin/delete_product',$products->id)}}" title="Delete Product">
+                                        <a class="w-7 h-7 bg-red-600 bg-opacity-80 rounded-lg flex items-center justify-center text-white border border-white border-opacity-10 transition-all duration-200 hover:-translate-y-1 hover:shadow-lg" onclick="confirmation(event)" href="{{url('/admin/delete_product',$product->id)}}" title="Delete Product">
                                             <i class="fa fa-trash"></i>
                                         </a>
                                     </div>
@@ -56,7 +62,7 @@
                         </table>
                     </div>
                     <div class="mt-8 flex justify-center">
-                        {{ $product->onEachSide(3)->links() }}
+                        {{ $products->links() }}
                     </div>
                 </div>
             </div>

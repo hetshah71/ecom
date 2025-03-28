@@ -25,8 +25,8 @@
                  </ul>
              </li>
              <li>
-                 <a href="{{url('/admin/view_orders')}}"> <i class="icon-grid"></i>orders
-                 </a>
+             <a href="{{url('/admin/view_orders')}}"> <i class="icon-grid"></i>orders
+             </a>
              </li>
              <li>
                  <a href="{{url('/admin/blocks')}}"> <i class="icon-grid"></i>Blocks

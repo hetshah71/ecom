@@ -71,6 +71,11 @@
                     </script>
 
                     <div class="w-11/12 mx-auto mt-8 p-4 border-2 border-green-500 border-opacity-30 rounded-lg">
+                        <div class="flex justify-end mb-4">
+                            <a href="{{ url('/admin/deleted_categories') }}" class="px-4 py-2 bg-blue-500 text-white font-medium rounded hover:bg-blue-600 transition-all duration-300">
+                                View Deleted Categories
+                            </a>
+                        </div>
                         <table class="w-full">
                             <tr>
                                 <th class="bg-blue-900 bg-opacity-10 text-white text-base font-semibold uppercase tracking-wider p-4">

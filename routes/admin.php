@@ -23,6 +23,12 @@ Route::prefix('admin')->group(function () {
 
     route::post('update_category/{id}', [CategoryController::class, 'update_category'])->middleware((['auth', 'admin']));
 
+    route::get('deleted_categories', [CategoryController::class, 'deleted_categories'])->middleware((['auth', 'admin']));
+
+
+    route::get('restore_category/{id}', [CategoryController::class, 'restore_category'])->middleware((['auth', 'admin']));
+
+    route::delete('force_delete_category/{id}', [CategoryController::class, 'force_delete_category'])->middleware((['auth', 'admin']));
     route::get('add_product', [AdminProductController::class, 'add_product'])->middleware((['auth', 'admin']));
 
     route::post('upload_product', [AdminProductController::class, 'upload_product'])->middleware((['auth', 'admin']));
@@ -34,6 +40,14 @@ Route::prefix('admin')->group(function () {
     Route::get('edit_product/{id}', [AdminProductController::class, 'edit_product'])->middleware((['auth', 'admin']));
 
     Route::post('update_product/{id}', [AdminProductController::class, 'update_product'])->middleware((['auth', 'admin']));
+
+    Route::get('deleted_products', [AdminProductController::class, 'deleted_products'])->middleware((['auth', 'admin']));
+
+    Route::get('restore_product/{id}', [AdminProductController::class, 'restore_product'])->middleware((['auth', 'admin']));
+
+    Route::delete('force_delete_product/{id}', [AdminProductController::class, 'force_delete_product'])->middleware((['auth', 'admin']));
+
+
 
     Route::get('view_orders', [OrderController::class, 'view_orders'])->middleware((['auth', 'admin']));
 
@@ -54,7 +68,7 @@ Route::prefix('admin')->group(function () {
 
         Route::delete('/{slug}/delete', [StaticBlockController::class, 'destroy'])->name('admin.blocks.delete');
     });
-    
+
     Route::prefix('pages')->group(function () {
         Route::get('/', [StaticPageController::class, 'index'])->name('admin.pages.index');
 

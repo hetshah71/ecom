@@ -54,8 +54,8 @@ class ProductController extends Controller
     public function view_product()
     {
         try {
-            $product = product::paginate(3);
-            return view('admin.view_product', compact('product'));
+            $products = product::paginate(3);
+            return view('admin.view_product', compact('products'));
         } catch (Exception $e) {
             return redirect()->back()->with('error', 'Failed to retrieve products!');
         }
@@ -65,9 +65,6 @@ class ProductController extends Controller
     {
         try {
             $data = product::findOrFail($id);
-            if ($data->image) {
-                Storage::disk('public')->delete($data->image);
-            }
             $data->delete();
             session()->flash('success', 'The product has been deleted successfully');
             return redirect()->back();
@@ -116,4 +113,42 @@ class ProductController extends Controller
             return redirect()->back()->with('error', 'Failed to update product!');
         }
     }
+
+    public function deleted_products()
+    {
+        try {
+            $product = product::onlyTrashed()->paginate(3);
+            return view('admin.deleted_products', compact('product'));
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', 'Failed to retrieve deleted products!');
+        }
+    }
+
+    public function restore_product($id)
+    {
+        try {
+            $data = product::withTrashed()->findOrFail($id);
+            $data->restore();
+            session()->flash('success', 'The product has been restored successfully');
+            return redirect()->back();
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', 'Failed to restore product!');
+        }
+    }
+    public function force_delete_product($id)
+    {
+        try {
+            $data = product::withTrashed()->find($id);
+            if ($data) {
+                $data->forceDelete();
+                session()->flash('success', 'The product has been permanently deleted successfully');
+                return redirect()->back();
+            } else {
+                session()->flash('error', 'product not found.');
+            }
+        } catch (Exception $e) {
+            session()->flash('error', 'Failed to permanently delete product: ' . $e->getMessage());
+        }
+    }
+
 }

@@ -84,4 +84,46 @@ class CategoryController extends Controller
 
         return redirect('/admin/view_category');
     }
+
+    public function deleted_categories()
+    {
+        try {
+            $data = Category::onlyTrashed()->get();
+            return view('admin.deleted_categories', compact('data'));
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', 'Failed to fetch deleted categories: ' . $e->getMessage());
+        }
+    }
+
+    public function restore_category($id)
+    {
+        try {
+            $category = Category::withTrashed()->find($id);
+            if ($category) {
+                $category->restore();
+                session()->flash('success', 'The category has been restored successfully');
+
+            } else {
+                session()->flash('error', 'Category not found.');
+            }
+        } catch (Exception $e) {
+            session()->flash('error', 'Failed to restore category: ' . $e->getMessage());
+        }
+
+        return redirect()->back();
+    }
+    public function force_delete_category($id){
+        try {
+            $data = Category::withTrashed()->find($id);
+            if ($data) {
+                $data->forceDelete();
+                session()->flash('success', 'The category has been permanently deleted successfully');
+                return redirect()->back();
+            } else {
+                session()->flash('error', 'Category not found.');
+            }
+        } catch (Exception $e) {
+            session()->flash('error', 'Failed to permanently delete category: '. $e->getMessage());
+        }
+    }
 }
