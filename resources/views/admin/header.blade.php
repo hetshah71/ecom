@@ -1,3 +1,4 @@
+
 <header class="header">
     <nav class="navbar navbar-expand-lg">
         <div class="search-panel">
@@ -22,14 +23,12 @@
             </div>
 
             <!-- Log out               -->
-            <div class="list-inline-item logout">
-
+            <!-- <div class="list-inline-item logout"> -->
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-
-                   <input type="submit" value="Logout">
+                    <input class="logout-button" type="submit" value="Logout">
                 </form>
-            </div>
+            <!-- </div> -->
         </div>
         </div>
     </nav>

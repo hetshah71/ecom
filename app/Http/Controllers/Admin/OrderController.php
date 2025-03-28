@@ -13,7 +13,7 @@ class OrderController extends Controller
     public function view_orders()
     {
         try {
-            $orders = Order::with('product')->paginate(1);
+            $orders = Order::with('product')->paginate(3);
             return view('admin.order', compact('orders'));
         } catch (Exception $e) {
             return redirect()->back()->with('error', 'Failed to fetch orders: ' . $e->getMessage());

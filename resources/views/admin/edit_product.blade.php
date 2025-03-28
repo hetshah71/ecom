@@ -67,13 +67,17 @@
                         <div class="mb-6">
                             <label class="block mb-2 text-sm font-medium text-gray-300">Product Image</label>
                             <div class="text-center my-4">
-                                <img src="{{ asset('storage/'.$product->image) }}" alt="{{$product->title}}" class="max-w-[200px] mx-auto rounded-md shadow-lg">
+                                <!-- Old Image Preview -->
+                                <img id="image-preview" src="{{ asset('storage/'.$product->image) }}" alt="{{$product->title}}" class="max-w-[200px] mx-auto rounded-md shadow-lg border border-white/10">
                             </div>
+
                             <label class="block p-3 bg-blue-900/10 border border-dashed border-blue-500/30 rounded-md text-gray-300 text-center cursor-pointer transition-all duration-300 hover:bg-blue-900/20 hover:border-blue-500/50" for="image">
                                 <i class="fa fa-cloud-upload"></i> Choose a new image
                             </label>
-                            <input type="file" name="image" id="image" class="hidden">
+
+                            <input type="file" name="image" id="image" accept="image/*" class="hidden">
                         </div>
+
                         @error('image')
                         <span class="text-red-500">{{ $message }}</span>
                         @enderror
@@ -87,6 +91,19 @@
             </div>
         </div>
     </div>
+    <script>
+        document.getElementById("image").addEventListener("change", function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById("image-preview").src = e.target.result; // Update image preview
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+
     <script src="{{asset('admincss/vendor/jquery/jquery.min.js')}}"></script>
     <script src="{{asset('admincss/vendor/popper.js/umd/popper.min.js')}}"></script>
     <script src="{{asset('admincss/vendor/bootstrap/js/bootstrap.min.js')}}"></script>
