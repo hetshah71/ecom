@@ -44,6 +44,12 @@
                     <i class="fa fa-shopping-bag" aria-hidden="true"></i>
                     [<span id="cart-count" class="cart_count">{{ $count }}</span>]
                 </a>
+                <a href="{{url('/profile')}}">
+                    <i class="fa fa-vcard" aria-hidden="true"></i>
+                    <span>
+                        Profile
+                    </span>
+                </a>
 
                 <form style="padding:10px" method="POST" action="{{ route('logout') }}">
                     @csrf

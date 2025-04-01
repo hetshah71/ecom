@@ -71,119 +71,119 @@ class HomeController extends Controller
         }
     }
 
-    public function mycart()
-    {
-        try {
-            $user = Auth::user();
-            $count = Auth::check() ? Cart::where('user_id', $user->id)->count() : '';
-            $cart = Auth::check() ? Cart::with('product')->where('user_id', $user->id)->get() : collect([]);
-            return view('home.mycart', compact('count', 'cart', 'user'));
-        } catch (\Exception $e) {
-            Log::error('Error fetching cart data: ' . $e->getMessage());
-            return back()->with('error', 'An error occurred while loading your cart.');
-        }
-    }
+    // public function mycart()
+    // {
+    //     try {
+    //         $user = Auth::user();
+    //         $count = Auth::check() ? Cart::where('user_id', $user->id)->count() : '';
+    //         $cart = Auth::check() ? Cart::with('product')->where('user_id', $user->id)->get() : collect([]);
+    //         return view('home.mycart', compact('count', 'cart', 'user'));
+    //     } catch (\Exception $e) {
+    //         Log::error('Error fetching cart data: ' . $e->getMessage());
+    //         return back()->with('error', 'An error occurred while loading your cart.');
+    //     }
+    // }
 
-    public function remove_cart($id)
-    {
-        try {
-            $cart = Cart::findOrFail($id);
-            $cart->delete();
-            $cartCount = Cart::where('user_id', Auth::id())->count();
-            return response()->json(['success' => true, 'message' => 'Product removed from cart successfully', 'cartCount' => $cartCount]);
-        } catch (\Exception $e) {
-            Log::error('Error removing cart item: ' . $e->getMessage());
-            return response()->json(['success' => false, 'message' => 'Error removing product from cart'], 500);
-        }
-    }
+    // public function remove_cart($id)
+    // {
+    //     try {
+    //         $cart = Cart::findOrFail($id);
+    //         $cart->delete();
+    //         $cartCount = Cart::where('user_id', Auth::id())->count();
+    //         return response()->json(['success' => true, 'message' => 'Product removed from cart successfully', 'cartCount' => $cartCount]);
+    //     } catch (\Exception $e) {
+    //         Log::error('Error removing cart item: ' . $e->getMessage());
+    //         return response()->json(['success' => false, 'message' => 'Error removing product from cart'], 500);
+    //     }
+    // }
 
-    public function confirm_order(Request $request)
-    {
-        try {
-            $request->validate(['name' => 'required|max:255', 'phone' => 'required|max:20', 'address' => 'required|max:1000']);
-            $cartItems = Cart::where('user_id', Auth::id())->get();
-            if ($cartItems->isEmpty()) {
-                return response()->json(['success' => false, 'message' => 'Your cart is empty!'], 400);
-            }
-            DB::beginTransaction();
-            $invoice_no = 'INV-' . time() . '-' . Auth::id();
-            $total_amount = 0;
+    // public function confirm_order(Request $request)
+    // {
+    //     try {
+    //         $request->validate(['name' => 'required|max:255', 'phone' => 'required|max:20', 'address' => 'required|max:1000']);
+    //         $cartItems = Cart::where('user_id', Auth::id())->get();
+    //         if ($cartItems->isEmpty()) {
+    //             return response()->json(['success' => false, 'message' => 'Your cart is empty!'], 400);
+    //         }
+    //         DB::beginTransaction();
+    //         $invoice_no = 'INV-' . time() . '-' . Auth::id();
+    //         $total_amount = 0;
 
-            foreach ($cartItems as $item) {
-                $order = new Order();
-                $order->user_id = Auth::id();
-                $order->product_id = $item->product_id;
-                $order->quantity = $item->quantity;
-                $order->invoice_no = $invoice_no;
-                $order->name = $request->name;
-                $order->phone = $request->phone;
-                $order->rec_address = $request->address;
-                $order->payment_status = 'pending';
-                $order->status = 'in process';
-                $order->delivery_status = 'pending';
-                $order->save();
-                $total_amount += $order->total_price;
-            }
-            Cart::where('user_id', Auth::id())->delete();
-            Session::put('invoice_data', compact('invoice_no', 'total_amount'));
-            DB::commit();
-            return response()->json(['success' => true, 'message' => 'Order placed successfully!', 'redirect_url' => route('show.invoice', ['invoice_no' => $invoice_no])]);
-        } catch (\Exception $e) {
-            DB::rollBack();
-            Log::error('Error placing order: ' . $e->getMessage());
-            return response()->json(['success' => false, 'message' => 'An error occurred while placing your order. Please try again.'], 500);
-        }
-    }
+    //         foreach ($cartItems as $item) {
+    //             $order = new Order();
+    //             $order->user_id = Auth::id();
+    //             $order->product_id = $item->product_id;
+    //             $order->quantity = $item->quantity;
+    //             $order->invoice_no = $invoice_no;
+    //             $order->name = $request->name;
+    //             $order->phone = $request->phone;
+    //             $order->rec_address = $request->address;
+    //             $order->payment_status = 'pending';
+    //             $order->status = 'in process';
+    //             $order->delivery_status = 'pending';
+    //             $order->save();
+    //             $total_amount += $order->total_price;
+    //         }
+    //         Cart::where('user_id', Auth::id())->delete();
+    //         Session::put('invoice_data', compact('invoice_no', 'total_amount'));
+    //         DB::commit();
+    //         return response()->json(['success' => true, 'message' => 'Order placed successfully!', 'redirect_url' => route('show.invoice', ['invoice_no' => $invoice_no])]);
+    //     } catch (\Exception $e) {
+    //         DB::rollBack();
+    //         Log::error('Error placing order: ' . $e->getMessage());
+    //         return response()->json(['success' => false, 'message' => 'An error occurred while placing your order. Please try again.'], 500);
+    //     }
+    // }
 
-    public function showInvoice($invoice_no)
-    {
-        try {
-            $orders = Order::with(['product', 'user'])->where('invoice_no', $invoice_no)->get();
-            if ($orders->isEmpty()) {
-                return redirect()->route('myorders')->with('error', 'Invoice not found.');
-            }
+    // public function showInvoice($invoice_no)
+    // {
+    //     try {
+    //         $orders = Order::with(['product', 'user'])->where('invoice_no', $invoice_no)->get();
+    //         if ($orders->isEmpty()) {
+    //             return redirect()->route('myorders')->with('error', 'Invoice not found.');
+    //         }
 
-            $firstOrder = $orders->first();
-            $invoice_data = [
-                'invoice_no' => $invoice_no,
-                'order_date' => $firstOrder->created_at->format('Y-m-d'),
-                'customer_name' => $firstOrder->user->name,
-                'customer_phone' => $firstOrder->user->phone ?? 'N/A',
-                'customer_address' => $firstOrder->user->address ?? 'N/A'
-            ];
-            // dd($invoice_data);
+    //         $firstOrder = $orders->first();
+    //         $invoice_data = [
+    //             'invoice_no' => $invoice_no,
+    //             'order_date' => $firstOrder->created_at->format('Y-m-d'),
+    //             'customer_name' => $firstOrder->user->name,
+    //             'customer_phone' => $firstOrder->user->phone ?? 'N/A',
+    //             'customer_address' => $firstOrder->user->address ?? 'N/A'
+    //         ];
+            
 
-            return view('home.invoice', compact('orders', 'invoice_data'));
-        } catch (\Exception $e) {
-            Log::error('Error showing invoice: ' . $e->getMessage());
-            return redirect()->route('myorders')->with('error', 'An error occurred while loading the invoice.');
-        }
-    }
+    //         return view('home.invoice', compact('orders', 'invoice_data'));
+    //     } catch (\Exception $e) {
+    //         Log::error('Error showing invoice: ' . $e->getMessage());
+    //         return redirect()->route('myorders')->with('error', 'An error occurred while loading the invoice.');
+    //     }
+    // }
 
-    public function downloadInvoice($invoice_no)
-    {
-        try {
-            $orders = Order::with(['product', 'user'])->where('invoice_no', $invoice_no)->get();
-            if ($orders->isEmpty()) {
-                return redirect()->route('myorders')->with('error', 'Invoice not found.');
-            }
+    // public function downloadInvoice($invoice_no)
+    // {
+    //     try {
+    //         $orders = Order::with(['product', 'user'])->where('invoice_no', $invoice_no)->get();
+    //         if ($orders->isEmpty()) {
+    //             return redirect()->route('myorders')->with('error', 'Invoice not found.');
+    //         }
 
-            $firstOrder = $orders->first();
-            $invoice_data = [
-                'invoice_no' => $invoice_no,
-                'order_date' => $firstOrder->created_at->format('Y-m-d'),
-                'customer_name' => $firstOrder->user->name,
-                'customer_phone' => $firstOrder->user->phone ?? 'N/A',
-                'customer_address' => $firstOrder->user->address ?? 'N/A'
-            ];
+    //         $firstOrder = $orders->first();
+    //         $invoice_data = [
+    //             'invoice_no' => $invoice_no,
+    //             'order_date' => $firstOrder->created_at->format('Y-m-d'),
+    //             'customer_name' => $firstOrder->user->name,
+    //             'customer_phone' => $firstOrder->user->phone ?? 'N/A',
+    //             'customer_address' => $firstOrder->user->address ?? 'N/A'
+    //         ];
 
-            $pdf = Pdf::loadView('home.pdf_invoice', compact('orders', 'invoice_data'));
-            return $pdf->download($invoice_no . '.pdf');
-        } catch (\Exception $e) {
-            Log::error('Error generating PDF invoice: ' . $e->getMessage());
-            return redirect()->route('myorders')->with('error', 'An error occurred while generating the PDF.');
-        }
-    }
+    //         $pdf = Pdf::loadView('home.pdf_invoice', compact('orders', 'invoice_data'));
+    //         return $pdf->download($invoice_no . '.pdf');
+    //     } catch (\Exception $e) {
+    //         Log::error('Error generating PDF invoice: ' . $e->getMessage());
+    //         return redirect()->route('myorders')->with('error', 'An error occurred while generating the PDF.');
+    //     }
+    // }
     public function shop()
     {
         try {

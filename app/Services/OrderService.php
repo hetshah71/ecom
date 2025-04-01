@@ -37,7 +37,7 @@ class OrderService
 
             // Attach products to the order with their quantities and prices
             foreach ($cartItems as $item) {
-                $order->products()->attach($item->product_id, [
+                $order->product()->attach($item->product_id, [
                     'quantity' => $item->quantity,
                     'price' => $item->product->price
                 ]);
@@ -63,7 +63,7 @@ class OrderService
     {
         try {
             $userId = Auth::id();
-            $orders = Order::with('products')
+            $orders = Order::with('product')
                 ->where('user_id', $userId)
                 ->orderBy('created_at', 'desc')
                 ->get();
@@ -84,15 +84,23 @@ class OrderService
     {
         try {
             $userId = Auth::id();
-            $order = Order::with(['products', 'user'])
+            $order = Order::with(['products' => function ($query) {
+                $query->withPivot(['quantity', 'price']);
+            }, 'user'])
                 ->where('user_id', $userId)
                 ->where('invoice_no', $invoice_no)
                 ->firstOrFail();
 
-            $total = 0;
-            foreach ($order->products as $product) {
-                $total += $product->pivot->price * $product->pivot->quantity;
+            if (!$order->products) {
+                return [
+                    'success' => false,
+                    'message' => 'No products found for this order'
+                ];
             }
+
+            $total = $order->products->sum(function ($product) {
+                return $product->pivot->price * $product->pivot->quantity;
+            });
 
             return [
                 'success' => true,

@@ -32,9 +32,10 @@ Route::delete('remove_cart/{id}', [CartController::class, 'remove_cart'])->name(
 
 Route::post('confirm_order', [CartController::class, 'confirm_order'])->name('confirm_order')->middleware((['auth', 'verified']));
 
-Route::get('/myorders', [HomeController::class, 'myorders'])->middleware(['auth', 'verified'])->name('myorders');
-Route::get('/invoice/{invoice_no}', [HomeController::class, 'showInvoice'])->name('show.invoice');
-Route::get('/invoice/{invoice_no}/download', [HomeController::class, 'downloadInvoice'])->name('download.invoice');
+Route::get('/myorders', [OrderController::class, 'show'])->middleware(['auth', 'verified'])->name('myorders');
+Route::get('/invoice/{invoice_no}', [OrderController::class, 'showInvoice'])->name('show.invoice');
+Route::get('/invoice/{invoice_no}/download', [OrderController::class, 'downloadInvoice'])->name('download.invoice');
+
 
 Route::get('shop', [HomeController::class, 'shop'])->name('shop');
 
