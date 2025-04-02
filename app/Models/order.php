@@ -21,8 +21,7 @@ class Order extends Model
         'delivery_status',
         'order_status',
         'payment_status',
-        'quantity',
-        'invoice_no'
+        'quantity'
     ];
 
     public function user()
@@ -34,9 +33,4 @@ class Order extends Model
     {
         return $this->belongsTo(Product::class);
     }
-
-    // public function products()
-    // {
-    //     return $this->belongsTo(Product::class, 'product_id');
-    // }
 }

@@ -137,21 +137,21 @@ class CartService
 
                 Cart::where('user_id', Auth::id())->delete();
 
-                Session::put('invoice_data', [
-                    'invoice_no' => $invoice_no,
-                    'order_date' => now()->format('F d, Y h:i A'),
-                    'customer_name' => $request->name,
-                    'customer_phone' => $request->phone,
-                    'customer_address' => $request->address,
-                    'total_amount' => $total_amount
-                ]);
+                // Session::put('invoice_data', [
+                //     'invoice_no' => $invoice_no,
+                //     'order_date' => now()->format('F d, Y h:i A'),
+                //     'customer_name' => $request->name,
+                //     'customer_phone' => $request->phone,
+                //     'customer_address' => $request->address,
+                //     'total_amount' => $total_amount
+                // ]);
 
                 DB::commit();
 
                 return response()->json([
                     'success' => true,
                     'message' => 'Order placed successfully!',
-                    'redirect_url' => route('show.invoice', ['invoice_no' => $invoice_no])
+                    'redirect_url' => route('myorders')
                 ]);
             } catch (\Exception $e) {
                 DB::rollBack();

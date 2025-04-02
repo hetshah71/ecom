@@ -13,7 +13,9 @@
         @include('home.header')
         <!-- End Header Section -->
     </div>
-
+  
+    {!! $page->content !!}
+<!-- 
     <section class="max-w-3xl mx-auto bg-white shadow-lg rounded-lg p-8 mt-10 mb-10 animate-fadeIn">
         <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">Terms and Conditions</h1>
         <p class="text-gray-600 leading-relaxed">Welcome to our eCommerce website. By accessing and using our website, you agree to comply with and be bound by the following terms and conditions.</p>
@@ -41,7 +43,7 @@
 
         <h2 class="text-2xl font-semibold text-blue-600 mt-6">8. Contact Information</h2>
         <p class="text-gray-600 leading-relaxed">If you have any questions about these Terms and Conditions, please contact us at support@example.com.</p>
-    </section>
+    </section> -->
 
     <!-- Footer Section -->
     @include('home.footer')

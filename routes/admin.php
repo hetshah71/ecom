@@ -10,54 +10,55 @@ use App\Http\Controllers\Admin\StaticPageController;
 
 require __DIR__ . '/auth.php';
 Route::prefix('admin')->group(function () {
+    Route::middleware(['auth', 'admin'])->group(function () {
+        route::get('dashboard', [HomeController::class, 'index']);
 
-    route::get('dashboard', [HomeController::class, 'index'])->middleware((['auth', 'admin']));
+        route::get('view_category', [CategoryController::class, 'view_category']);
 
-    route::get('view_category', [CategoryController::class, 'view_category'])->middleware((['auth', 'admin']));
+        route::post('add_category', [CategoryController::class, 'add_category']);
 
-    route::post('add_category', [CategoryController::class, 'add_category'])->middleware((['auth', 'admin']));
+        route::get('delete_category/{id}', [CategoryController::class, 'delete_category']);
 
-    route::get('delete_category/{id}', [CategoryController::class, 'delete_category'])->middleware((['auth', 'admin']));
+        route::get('edit_category/{id}', [CategoryController::class, 'edit_category']);
 
-    route::get('edit_category/{id}', [CategoryController::class, 'edit_category'])->middleware((['auth', 'admin']));
+        route::post('update_category/{id}', [CategoryController::class, 'update_category']);
 
-    route::post('update_category/{id}', [CategoryController::class, 'update_category'])->middleware((['auth', 'admin']));
-
-    route::get('deleted_categories', [CategoryController::class, 'deleted_categories'])->middleware((['auth', 'admin']));
-
-
-    route::get('restore_category/{id}', [CategoryController::class, 'restore_category'])->middleware((['auth', 'admin']));
-
-    route::delete('force_delete_category/{id}', [CategoryController::class, 'force_delete_category'])->middleware((['auth', 'admin']));
-    route::get('add_product', [AdminProductController::class, 'add_product'])->middleware((['auth', 'admin']));
-
-    route::post('upload_product', [AdminProductController::class, 'upload_product'])->middleware((['auth', 'admin']));
-
-    Route::get('view_product', [AdminProductController::class, 'view_product'])->middleware((['auth', 'admin']));
-
-    Route::get('delete_product/{id}', [AdminProductController::class, 'delete_product'])->middleware((['auth', 'admin']));
-
-    Route::get('edit_product/{id}', [AdminProductController::class, 'edit_product'])->middleware((['auth', 'admin']));
-
-    Route::post('update_product/{id}', [AdminProductController::class, 'update_product'])->middleware((['auth', 'admin']));
-
-    Route::get('deleted_products', [AdminProductController::class, 'deleted_products'])->middleware((['auth', 'admin']));
-
-    Route::get('restore_product/{id}', [AdminProductController::class, 'restore_product'])->middleware((['auth', 'admin']));
-
-    Route::delete('force_delete_product/{id}', [AdminProductController::class, 'force_delete_product'])->middleware((['auth', 'admin']));
+        route::get('deleted_categories', [CategoryController::class, 'deleted_categories']);
 
 
+        route::get('restore_category/{id}', [CategoryController::class, 'restore_category']);
 
-    Route::get('view_orders', [OrderController::class, 'view_orders'])->middleware((['auth', 'admin']));
+        route::delete('force_delete_category/{id}', [CategoryController::class, 'force_delete_category']);
+        route::get('add_product', [AdminProductController::class, 'add_product']);
 
-    Route::get('on_the_way/{id}', [OrderController::class, 'on_the_way'])->middleware((['auth', 'admin']));
+        route::post('upload_product', [AdminProductController::class, 'upload_product']);
 
-    Route::get('delivered/{id}', [OrderController::class, 'delivered'])->middleware((['auth', 'admin']));
+        Route::get('view_product', [AdminProductController::class, 'view_product']);
 
-    Route::get('print_pdf/{id}', [OrderController::class, 'print_pdf'])->middleware((['auth', 'admin']));
+        Route::get('delete_product/{id}', [AdminProductController::class, 'delete_product']);
 
+        Route::get('edit_product/{id}', [AdminProductController::class, 'edit_product']);
+
+        Route::post('update_product/{id}', [AdminProductController::class, 'update_product']);
+
+        Route::get('deleted_products', [AdminProductController::class, 'deleted_products']);
+
+        Route::get('restore_product/{id}', [AdminProductController::class, 'restore_product']);
+
+        Route::delete('force_delete_product/{id}', [AdminProductController::class, 'force_delete_product']);
+
+        Route::get('view_orders', [OrderController::class, 'view_orders']);
+
+        Route::get('on_the_way/{id}', [OrderController::class, 'on_the_way']);
+
+        Route::get('delivered/{id}', [OrderController::class, 'delivered']);
+
+        Route::get('print_pdf/{id}', [OrderController::class, 'print_pdf']);
+    });
+
+    
     Route::prefix('blocks')->group(function () {
+            Route::middleware(['auth', 'admin'])->group(function () {
         Route::get('/', [StaticBlockController::class, 'index'])->name('admin.blocks.index');
 
         Route::get('/create', [StaticBlockController::class, 'create'])->name('admin.blocks.create');
@@ -68,8 +69,9 @@ Route::prefix('admin')->group(function () {
 
         Route::delete('/{slug}/delete', [StaticBlockController::class, 'destroy'])->name('admin.blocks.delete');
     });
-
+    });
     Route::prefix('pages')->group(function () {
+                Route::middleware(['auth', 'admin'])->group(function () {
         Route::get('/', [StaticPageController::class, 'index'])->name('admin.pages.index');
 
         Route::get('/create', [StaticPageController::class, 'create'])->name('admin.pages.create');
@@ -79,5 +81,6 @@ Route::prefix('admin')->group(function () {
         Route::patch('/{slug}/update', [StaticPageController::class, 'update'])->name('admin.pages.update');
 
         Route::delete('/{slug}/delete', [StaticPageController::class, 'destroy'])->name('admin.pages.delete');
+    });
     });
 });

@@ -111,8 +111,10 @@ $(document).ready(function () {
                         )
                         .show();
 
-                    // Redirect to invoice page
-                    window.location.href = response.redirect_url;
+                    // Delay redirect to allow user to see the success message
+                    setTimeout(function () {
+                        window.location.href = response.redirect_url;
+                    }, 1500);
                 } else {
                     // Show error message
                     $("#cart-message")
@@ -157,5 +159,4 @@ $(document).ready(function () {
     }
 
     // Handle add to cart button click
-  
 });

@@ -8,7 +8,7 @@ use App\Models\StaticPage;
 
 class StaticPageController extends Controller
 {
-    public function show(string $slug='terms'){
+    public function show(string $slug= 'terms-and-conditions'){
         $page = StaticPage::where('slug', $slug)->where('status',1)->first();
         if(!$page){
             abort(404);

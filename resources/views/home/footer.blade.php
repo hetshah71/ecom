@@ -25,7 +25,7 @@
                     <h6>
                         ABOUT US
                     </h6>
-                    <a href={{route('terms')}}>Terms & conditions</a>
+                    <a href="{{route('terms')}}">Terms & conditions</a>
 
 
                     <p>
