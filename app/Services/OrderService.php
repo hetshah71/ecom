@@ -20,12 +20,9 @@ class OrderService
                 'address' => $address
             ]);
 
-            // Eager load the products relationship
-            $cartItems = Cart::with('product')
-                ->where('user_id', $userId)
-                ->get();
 
-            if ($cartItems->isEmpty()) {
+            // Eager load the products relationship (use the passed $cartItems if already loaded)
+            if (!$cartItems) {
                 return [
                     'success' => false,
                     'message' => 'Your cart is empty'
@@ -33,27 +30,29 @@ class OrderService
             }
 
             // Create the order
-            $order = Order::create([
-                'user_id' => $userId,
-                'payment_status' => 'pending',
-                'delivery_status' => 'processing',
-                'order_status' => 'confirmed',
-                'status' => 'Pending'
-            ]);
+            $order = new Order();
+            $order->user_id = $userId;
+            $order->payment_status = 'pending';
+            $order->delivery_status = 'processing';
+            $order->order_status = 'confirmed';
+            $order->status = 'Pending';
+            $order->name = Auth::user()->name;
+            $order->rec_address = $Address->address;
+            $order->phone = Auth::user()->phone;
+            $order->product_id = $cartItems[0]->product_id ?? null;
+            $order->quantity = $cartItems[0]->quantity ?? null;
+            $order->invoice_no = 'INV-' . time(); // Ensure invoice number is generated
+            $order->save();
 
-            // Attach products to the order with their quantities and prices
-            foreach ($cartItems as $item) {
-                $order->products()->attach($item->product_id, [
-                    'quantity' => $item->quantity,
-                    'price' => $item->product->price
-                ]);
-            }
-
+           
             // Clear the cart after successful order creation
             Cart::where('user_id', $userId)->delete();
 
             // Calculate total
             $total = $this->calculateOrderTotal($order);
+        
+            // Dispatch the OrderPlaced event
+            event(new \App\Events\OrderPlaced($order));
 
             return [
                 'success' => true,
@@ -68,7 +67,6 @@ class OrderService
             ];
         }
     }
-
     public function myOrders()
     {
         try {
@@ -94,8 +92,9 @@ class OrderService
 
     public function calculateOrderTotal(Order $order)
     {
-        return $order->products()->get()->sum(function ($product) {
-            return $product->pivot->price * $product->pivot->quantity;
-        });
+        if ($order->product) {
+            return $order->product->price * $order->quantity;
+        }
+        return 0; // Return 0 if no product is found
     }
 }

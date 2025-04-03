@@ -15,16 +15,35 @@
 
 
     </div>
-    <section class="why_section layout_padding">
+    <section class="why_section layout_padding" style="background-color: #f8f9fa;">
+        <style>
+            .box:hover {
+                transform: translateY(-5px);
+            }
+
+            .box:hover .box-bg {
+                top: 0;
+            }
+
+            .img-box svg {
+                width: 70px;
+                height: 70px;
+                margin-bottom: 1.5rem;
+                fill: #f7444e;
+            }
+        </style>
         <div class="container">
-            <div class="heading_container heading_center">
-                <h2>
+            <div class="heading_container heading_center mb-5">
+                <h2 class="mb-3 position-relative d-inline-block" style="color: #2a2a2a;">
                     Why Shop With Us
+                    <span class="position-absolute" style="height: 3px; width: 60%; background-color: #f7444e; bottom: -10px; left: 50%; transform: translateX(-50%);"></span>
                 </h2>
+                <p class="text-muted">Discover the advantages of choosing our store for your shopping needs</p>
             </div>
             <div class="row">
                 <div class="col-md-4">
-                    <div class="box ">
+                    <div class="box h-100 shadow-sm rounded-3 p-4 position-relative overflow-hidden transition-all" style="transition: all 0.3s ease;">
+                        <div class="box-bg position-absolute" style="background-color: #f7444e; width: 100%; height: 100%; top: 100%; left: 0; transition: all 0.3s ease; opacity: 0.05; z-index: 0;"></div>
                         <div class="img-box">
                             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
                                 <g>
@@ -112,18 +131,19 @@
                                 </g>
                             </svg>
                         </div>
-                        <div class="detail-box">
-                            <h5>
+                        <div class="detail-box position-relative z-1">
+                            <h5 class="mb-3 fw-bold text-uppercase" style="color: #f7444e;">
                                 Fast Delivery
                             </h5>
-                            <p>
-                                variations of passages of Lorem Ipsum available
+                            <p class="mb-0 text-muted">
+                                Get your orders delivered quickly and efficiently with our express shipping service.
                             </p>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="box ">
+                    <div class="box h-100 shadow-sm rounded-3 p-4 position-relative overflow-hidden transition-all" style="transition: all 0.3s ease;">
+                        <div class="box-bg position-absolute" style="background-color: #f7444e; width: 100%; height: 100%; top: 100%; left: 0; transition: all 0.3s ease; opacity: 0.05; z-index: 0;"></div>
                         <div class="img-box">
                             <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 490.667 490.667" style="enable-background:new 0 0 490.667 490.667;" xml:space="preserve">
                                 <g>
@@ -227,18 +247,19 @@
                                 </g>
                             </svg>
                         </div>
-                        <div class="detail-box">
-                            <h5>
-                                Free Shiping
+                        <div class="detail-box position-relative z-1">
+                            <h5 class="mb-3 fw-bold text-uppercase" style="color: #f7444e;">
+                                Free Shipping
                             </h5>
-                            <p>
-                                variations of passages of Lorem Ipsum available
+                            <p class="mb-0 text-muted">
+                                Enjoy complimentary shipping on all orders, making your shopping experience more affordable.
                             </p>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="box ">
+                    <div class="box h-100 shadow-sm rounded-3 p-4 position-relative overflow-hidden transition-all" style="transition: all 0.3s ease;">
+                        <div class="box-bg position-absolute" style="background-color: #f7444e; width: 100%; height: 100%; top: 100%; left: 0; transition: all 0.3s ease; opacity: 0.05; z-index: 0;"></div>
                         <div class="img-box">
                             <svg id="_30_Premium" height="512" viewBox="0 0 512 512" width="512" xmlns="http://www.w3.org/2000/svg" data-name="30_Premium">
                                 <g id="filled">
@@ -248,12 +269,12 @@
                                 </g>
                             </svg>
                         </div>
-                        <div class="detail-box">
-                            <h5>
+                        <div class="detail-box position-relative z-1">
+                            <h5 class="mb-3 fw-bold text-uppercase" style="color: #f7444e;">
                                 Best Quality
                             </h5>
-                            <p>
-                                variations of passages of Lorem Ipsum available
+                            <p class="mb-0 text-muted">
+                                We ensure premium quality products that meet the highest standards of excellence.
                             </p>
                         </div>
                     </div>

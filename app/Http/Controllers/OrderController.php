@@ -19,11 +19,13 @@ class OrderController extends Controller
 
     public function store(Request $request)
     {
+    
         $request->validate([
             'address' => 'required|string'
         ]);
-
+     
         $cartItems = Auth::user()->cart;
+        
         $result = $this->orderService->confirmOrder($cartItems, $request->address);
 
         if (!$result['success']) {
@@ -31,9 +33,10 @@ class OrderController extends Controller
         }
 
         $order = $result['order'];
+        // Fire the event to send the email
         event(new OrderPlaced($order));
 
-        return redirect()->route('mycart')->with('success', 'Order placed successfully!');
+        return redirect()->route('myorders')->with('success', 'Order placed successfully!');
     }
 
     public function show()
@@ -50,7 +53,7 @@ class OrderController extends Controller
             $orders = Order::where('user_id', $userId) // Load related order items if needed
                 ->orderBy('created_at', 'desc')
                 ->get();
-                // dd($orders);
+                
 
             return view('home.order', compact('orders'));
         } catch (\Exception $e) {

@@ -12,6 +12,7 @@ class SendOrderPlacedEmail
     public function handle(OrderPlaced $event)
     {
         try {
+           
             // Send email to the user
             Mail::to($event->order->user->email)->queue(new OrderPlacedMail($event->order));
 

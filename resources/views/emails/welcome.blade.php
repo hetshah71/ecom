@@ -5,43 +5,91 @@
     <title>Welcome to Giftos</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            color: #333;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            line-height: 1.8;
+            color: #2c3e50;
             max-width: 600px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 30px 20px;
+            background-color: #f5f6fa;
         }
 
         .header {
-            background-color: #007bff;
+            background: linear-gradient(135deg, #f5426c 0%, #f83a3a 100%);
             color: white;
-            padding: 20px;
+            padding: 35px 20px;
             text-align: center;
-            border-radius: 5px 5px 0 0;
+            border-radius: 12px 12px 0 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 32px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
         }
 
         .content {
-            background-color: #f8f9fa;
-            padding: 20px;
-            border-radius: 0 0 5px 5px;
+            background-color: white;
+            padding: 40px 30px;
+            border-radius: 0 0 12px 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .content h2 {
+            color: #2c3e50;
+            font-size: 24px;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .content p {
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        .content ul {
+            padding-left: 20px;
+            margin-bottom: 25px;
+        }
+
+        .content li {
+            margin-bottom: 10px;
+            font-size: 16px;
         }
 
         .button {
             display: inline-block;
-            padding: 10px 20px;
-            background-color: #007bff;
+            padding: 14px 30px;
+            background: linear-gradient(135deg, #f5426c 0%, #f83a3a 100%);
             color: white;
             text-decoration: none;
-            border-radius: 5px;
-            margin-top: 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            text-align: center;
+            transition: transform 0.2s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
         }
 
         .footer {
-            margin-top: 20px;
+            margin-top: 30px;
             text-align: center;
-            font-size: 12px;
-            color: #666;
+            font-size: 14px;
+            color: #7f8c8d;
+            line-height: 1.6;
+        }
+
+        .footer p {
+            margin: 8px 0;
         }
     </style>
 </head>

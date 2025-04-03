@@ -45,7 +45,7 @@ class CartController extends Controller
     }
 
     public function confirm_order(Request $request)
-    {
+    {   
         try {
             return $this->cartService->confirmOrder($request);
         } catch (Exception $e) {

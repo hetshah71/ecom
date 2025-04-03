@@ -55,7 +55,7 @@
 
             <div class="max-w-3xl mx-auto">
                 <h4 class="text-xl font-semibold text-gray-900 mb-6">Place Order</h4>
-                <form id="order-form" method="POST" action="{{ route('confirm_order') }}" class="space-y-6" novalidate>
+                <form id="order-form" method="POST" action="{{ route('orders.store') }}" class="space-y-6" novalidate>
                     @csrf
                     <div>
                         <label for="name" class="block text-sm font-medium text-gray-700">Full Name</label>

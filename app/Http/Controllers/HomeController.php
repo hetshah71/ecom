@@ -151,7 +151,7 @@ class HomeController extends Controller
     //             'customer_phone' => $firstOrder->user->phone ?? 'N/A',
     //             'customer_address' => $firstOrder->user->address ?? 'N/A'
     //         ];
-            
+
 
     //         return view('home.invoice', compact('orders', 'invoice_data'));
     //     } catch (\Exception $e) {
@@ -192,6 +192,34 @@ class HomeController extends Controller
         } catch (\Exception $e) {
             Log::error('Error loading shop page: ' . $e->getMessage());
             return back()->with('error', 'An error occurred while loading the shop page.');
+        }
+    }
+
+    public function why()
+    {
+        try {
+            return view('home.why');
+        } catch (\Exception $e) {
+            Log::error('Error loading why page: ' . $e->getMessage());
+            return back()->with('error', 'An error occurred while loading the page.');
+        }
+    }
+    public function contact()
+    {
+        try {
+            return view('home.contact');
+        } catch (\Exception $e) {
+            Log::error('Error loading contact page: ' . $e->getMessage());
+            return back()->with('error', 'An error occurred while loading the page.');
+        }
+    }
+    public function testimonial()
+    {
+        try {
+            return view('home.testimonial');
+        } catch (\Exception $e) {
+            Log::error('Error loading testimonial page: ' . $e->getMessage());
+            return back()->with('error', 'An error occurred while loading the page.');
         }
     }
 }

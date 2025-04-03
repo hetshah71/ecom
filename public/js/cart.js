@@ -37,8 +37,11 @@ $(document).ready(function () {
         },
     });
 
+    // Remove any existing click handlers before adding new one
+    $(".btn-remove").off("click");
+
     // Handle remove from cart
-    $(".btn-remove").click(function () {
+    $(".btn-remove").on("click", function () {
         var cartId = $(this).data("cart-id");
         if (
             confirm("Are you sure you want to remove this item from your cart?")
@@ -53,99 +56,44 @@ $(document).ready(function () {
                 },
                 success: function (response) {
                     if (response.success) {
-                        location.reload();
+                        showFloatingNotification(response.message, "success");
+                        // Update cart count in header
+                        if (response.cartCount !== undefined) {
+                            $("#cart-count").text(response.cartCount);
+                        }
+                        // Remove the row from the table
+                        $(`.btn-remove[data-cart-id="${cartId}"]`)
+                            .closest("tr")
+                            .fadeOut(function () {
+                                $(this).remove();
+                                // Update cart UI without page reload
+                                updateCartTotal();
+                                // Show empty cart message if no items left
+                                if ($(".cart-table tbody tr").length === 0) {
+                                    $(".cart-table").replaceWith(
+                                        '<div class="text-center"><h2>Your cart is empty!</h2><p>Add some products to your cart before placing an order.</p></div>'
+                                    );
+                                }
+                            });
                     } else {
-                        alert("Error removing item from cart");
+                        showFloatingNotification(
+                            response.message || "Error removing item from cart",
+                            "danger"
+                        );
                     }
                 },
-                error: function () {
-                    alert("Error removing item from cart");
+                error: function (xhr) {
+                    let errorMessage = "Error removing item from cart";
+                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                        errorMessage = xhr.responseJSON.message;
+                    }
+                    showFloatingNotification(errorMessage, "danger");
                 },
             });
         }
     });
 
     // Handle order form submission
-    $("#order-form").submit(function (e) {
-        e.preventDefault();
-
-        // Get form data
-        var formData = {
-            name: $("#name").val(),
-            phone: $("#phone").val(),
-            address: $("#address").val(),
-        };
-        console.log(formData);
-
-        // Validate form
-        if (!formData.name || !formData.phone || !formData.address) {
-            $("#cart-message")
-                .html(
-                    '<div class="alert alert-danger">Please fill in all required fields.</div>'
-                )
-                .show();
-            return;
-        }
-
-        // Disable submit button and show loading state
-        var submitBtn = $(this).find('button[type="submit"]');
-        submitBtn
-            .prop("disabled", true)
-            .html(
-                '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...'
-            );
-
-        // Send AJAX request
-        $.ajax({
-            url: "/confirm_order",
-            type: "POST",
-            data: formData,
-            success: function (response) {
-                if (response.success) {
-                    // Show success message
-                    $("#cart-message")
-                        .html(
-                            '<div class="alert alert-success">' +
-                                response.message +
-                                "</div>"
-                        )
-                        .show();
-
-                    // Delay redirect to allow user to see the success message
-                    setTimeout(function () {
-                        window.location.href = response.redirect_url;
-                    }, 1500);
-                } else {
-                    // Show error message
-                    $("#cart-message")
-                        .html(
-                            '<div class="alert alert-danger">' +
-                                response.message +
-                                "</div>"
-                        )
-                        .show();
-                }
-            },
-            error: function (xhr) {
-                var errorMessage =
-                    "An error occurred while placing your order. Please try again.";
-                if (xhr.responseJSON && xhr.responseJSON.message) {
-                    errorMessage = xhr.responseJSON.message;
-                }
-                $("#cart-message")
-                    .html(
-                        '<div class="alert alert-danger">' +
-                            errorMessage +
-                            "</div>"
-                    )
-                    .show();
-            },
-            complete: function () {
-                // Re-enable submit button
-                submitBtn.prop("disabled", false).text("Place Order");
-            },
-        });
-    });
 
     // Function to update cart total
     function updateCartTotal() {
